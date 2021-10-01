@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: containers
   gather_facts: false
   connection: local
   tasks:

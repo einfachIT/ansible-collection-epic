@@ -1,0 +1,12 @@
+local:
+  hosts:
+    localhost:
+      ansible_connection: local
+      ansible_python_interpreter: "{{ inventory_dir }}/venv/bin/python"
+
+containers:
+  hosts:
+    ssh_tor:
+      ansible_connection: docker
+      ansible_user: root
+      image: balenalib/raspberrypi4-64-debian-python

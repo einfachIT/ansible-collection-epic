@@ -1,11 +1,10 @@
 ---
-- hosts: all
-  gather_facts: false
-  connection: local
+- hosts: ssh_tor
+  gather_facts: yes
+  connection: docker
   tasks:
-    - name: Start a container
-      docker_container:
-        name: "{{ inventory_hostname }}"
-        image: "{{ image }}"
-        command: ["sleep", "infinity"]
-      delegate_to: 127.0.0.1
+    - name: "Include ssh_tor"
+      include_role:
+        name: "bassinator.ssh_tor"
+      vars:
+        installation_os_user: root
