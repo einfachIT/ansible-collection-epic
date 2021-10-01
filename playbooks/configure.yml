@@ -5,6 +5,6 @@
   tasks:
     - name: "Include ssh_tor"
       include_role:
-        name: "bassinator.ssh_tor"
+        name: "einfachit.epicserver.ssh_tor"
       vars:
         installation_os_user: root
