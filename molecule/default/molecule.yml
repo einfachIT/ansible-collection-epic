@@ -5,7 +5,7 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: instance
+  - name: ssh_tor
 provisioner:
   name: ansible
   config_options:
@@ -13,7 +13,7 @@ provisioner:
       remote_tmp: /tmp/.ansible
   inventory:
     links:
-      hosts: inventory.yml
+      hosts: ${INVENTORY_FILE:-"inventory_arm64.yml"}
   env:
     MOLECULE_PROJECT_DIRECTORY: ${MOLECULE_PROJECT_DIRECTORY} 
 verifier:
