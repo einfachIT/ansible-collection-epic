@@ -6,7 +6,6 @@ driver:
   name: delegated
 platforms:
   - name: instance
-    image: balenalib/raspberrypi4-64-debian-python
 provisioner:
   name: ansible
   config_options:

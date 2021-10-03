@@ -5,9 +5,14 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    # Developer must implement.
 
-    # Mandatory configuration for Molecule to function.
+
+    - name: Destroy a container
+      community.docker.docker_container:
+        name: ssh_tor
+        state: absent
+      register: docker
+
 
     - name: Populate instance config
       set_fact:
@@ -20,4 +25,5 @@
 
           {{ instance_conf | to_json | from_json | to_yaml }}
         dest: "{{ molecule_instance_config }}"
+        mode: 0600
       when: server.changed | default(false) | bool
