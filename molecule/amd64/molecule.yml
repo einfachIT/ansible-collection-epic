@@ -1,0 +1,21 @@
+---
+dependency:
+  name: shell
+  command: "ansible-galaxy collection install ../"
+driver:
+  name: delegated
+platforms:
+  - name: instance
+    image: balenalib/raspberrypi4-64-debian-python
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
+  inventory:
+    links:
+      hosts: inventory.yml
+  env:
+    MOLECULE_PROJECT_DIRECTORY: ${MOLECULE_PROJECT_DIRECTORY} 
+verifier:
+  name: ansible
