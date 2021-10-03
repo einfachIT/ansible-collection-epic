@@ -9,6 +9,9 @@ platforms:
     image: balenalib/raspberrypi4-64-debian-python
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
   inventory:
     links:
       hosts: inventory.yml
