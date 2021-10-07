@@ -35,6 +35,6 @@ jobs:
           source venv/bin/activate
           sed -i 's/version: 1.0.0/version: ${{ github.event.release.tag_name }}/' galaxy.yml
           ansible-galaxy collection build
-          ansible-galaxy collection publish --api-key="$GALAXY_API_KEY" einfachit-epicserver-${{ github.event.release.tag_name }}.tar.gz
+          ansible-galaxy collection publish --token "$GALAXY_API_KEY" einfachit-epicserver-${{ github.event.release.tag_name }}.tar.gz
 
 
