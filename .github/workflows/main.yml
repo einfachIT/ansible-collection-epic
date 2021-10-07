@@ -41,7 +41,7 @@ jobs:
         env:
           GALAXY_API_KEY: ${{ secrets.galaxy_api_key }}
         run: |
-          sed -i 's/GALAXY_VERSION/${{ github.event.release.tag_name }}/' galaxy.yml
+          sed -i 's/version: 1.0.0/version: ${{ github.event.release.tag_name }}/' galaxy.yml
           ansible-galaxy collection build
           ansible-galaxy collection publish --api-key="$GALAXY_API_KEY" einfachit-epicserver-${{ github.event.release.tag_name }}.tar.gz
 

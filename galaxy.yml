@@ -4,7 +4,7 @@ namespace: einfachit
 name: epicserver
 
 #version is replaced on release createion on github
-version: GALAXY_VERSION
+version: 1.0.0
 
 readme: README.md
 
