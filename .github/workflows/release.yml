@@ -3,10 +3,8 @@
 name: CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  release:
+    types: [published]
 
   workflow_dispatch:
 
@@ -25,11 +23,18 @@ jobs:
           sudo apt -y upgrade
           curl -fsSL https://get.docker.com | sudo bash
           sudo apt install python3 python3-pip virtualenv
-
-      - name: Run molecule tests
-        run: |
           virtualenv -p python3 venv
           source venv/bin/activate
           pip install ansible molecule molecule-docker yamllint
-          export INVENTORY_FILE=inventory_amd64.yml
-          molecule test
+          
+      - name: Build and Publish Collection
+        shell: bash
+        env:
+          GALAXY_API_KEY: ${{ secrets.galaxy_api_key }}
+        run: |
+          source venv/bin/activate
+          sed -i 's/version: 1.0.0/version: ${{ github.event.release.tag_name }}/' galaxy.yml
+          ansible-galaxy collection build
+          ansible-galaxy collection publish --api-key="$GALAXY_API_KEY" einfachit-epicserver-${{ github.event.release.tag_name }}.tar.gz
+
+
