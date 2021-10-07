@@ -30,7 +30,7 @@ jobs:
       - name: Build and Publish Collection
         shell: bash
         env:
-          GALAXY_API_KEY: ${{ secrets.galaxy_api_key }}
+          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         run: |
           source venv/bin/activate
           sed -i 's/version: 1.0.0/version: ${{ github.event.release.tag_name }}/' galaxy.yml
