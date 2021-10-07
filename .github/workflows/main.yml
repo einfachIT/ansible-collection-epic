@@ -34,9 +34,8 @@ jobs:
           export INVENTORY_FILE=inventory_amd64.yml
           molecule test
           
-      - name: Build and Deploy Collection
-        uses: artis3n/ansible_galaxy_collection@v2
-        with:
-          api_key: '${{ secrets.GALAXY_API_KEY }}'
-          publish: false
+      - name: Build Collection
+        run: |
+          ansible-galaxy collection build
+
 
