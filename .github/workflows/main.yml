@@ -7,6 +7,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  release:
+    types: [published]
 
   workflow_dispatch:
 
@@ -34,8 +36,12 @@ jobs:
           export INVENTORY_FILE=inventory_amd64.yml
           molecule test
           
-      - name: Build Collection
+      - name: Build and Publish Collection
+        shell: bash
+        env:
+          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         run: |
           ansible-galaxy collection build
+          ansible-galaxy collection publish artis3n-github_version-1.0.2.tar.gz --api-key="$env:GALAXY_API_KEY"
 
 
