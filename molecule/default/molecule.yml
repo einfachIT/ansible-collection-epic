@@ -1,7 +1,7 @@
 ---
 dependency:
   name: shell
-  command: "ansible-galaxy collection install ../"
+  command: "ansible-galaxy collection install ."
 driver:
   name: delegated
 platforms:

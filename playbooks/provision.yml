@@ -3,7 +3,7 @@
   gather_facts: false
   connection: local
   tasks:
-    - name: Start a container
+    - name: Start container
       docker_container:
         name: "{{ inventory_hostname }}"
         image: "{{ image }}"
