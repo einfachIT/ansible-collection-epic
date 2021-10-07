@@ -39,9 +39,9 @@ jobs:
       - name: Build and Publish Collection
         shell: bash
         env:
-          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+          GALAXY_API_KEY: ${{ secrets.galaxy_api_key }}
         run: |
           ansible-galaxy collection build
-          ansible-galaxy collection publish artis3n-github_version-1.0.2.tar.gz --api-key="$env:GALAXY_API_KEY"
+          ansible-galaxy collection publish --api-key="$GALAXY_API_KEY"
 
 
