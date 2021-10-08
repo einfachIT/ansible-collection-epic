@@ -1,3 +1,4 @@
 [submodule "roles/ssh-tor"]
 	path = roles/ssh_tor
 	url = https://github.com/einfachit/ansible-role-ssh-tor
+	update = merge
