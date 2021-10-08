@@ -8,3 +8,7 @@
         name: "einfachit.epicserver.ssh_tor"
       vars:
         installation_os_user: root
+
+    - name: "Include user mgmt"
+      include_role:
+        name: "einfachit.epicserver.users"
