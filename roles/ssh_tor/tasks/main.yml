@@ -1,0 +1,67 @@
+---
+
+- name: install software packages
+  apt:
+    name:
+      - tor
+      - netcat-openbsd
+#      - torsocks
+      - openssh-server
+    update_cache: true
+    state: present
+  become: true
+
+- name: start ssh service
+  service:
+    name: ssh
+    state: started
+
+- name: create tor hidden service dir
+  file:
+    path: "/var/lib/tor/ssh"
+    mode: '0700'
+    state: directory
+    owner: 'debian-tor'
+  notify:
+  - restart tor
+
+- name: write hidden service secret
+  ansible.builtin.copy:
+    content: "{{ onion_hidden_service_private_key_b64 | b64decode }}"
+    dest: "/var/lib/tor/ssh/hs_ed25519_secret_key"
+  when: onion_hidden_service_private_key_b64
+  notify:
+  - restart tor
+
+- name: configure ssh hidden service
+  blockinfile:
+    path: "/etc/tor/torrc"
+    mode: '0644'
+    block: |
+      HiddenServiceDir /var/lib/tor/ssh/
+      HiddenServicePort 22 127.0.0.1:22
+  notify:
+  - restart tor 
+
+- name: create .ssh config dir
+  file:
+    path: "~/.ssh"
+    mode: '0700'
+    state: directory
+  become: yes
+  become_user: "{{ installation_os_user }}"
+
+
+- name: configure ssh client proxy command
+  blockinfile:
+    path: "~/.ssh/config"
+    mode: '0644'
+    create: true
+    insertbefore: BOF
+    block: |
+      # Wildcard to match all tor hosts
+      Host *.onion *-tor
+      ProxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
+      CheckHostIP  no
+      Compression  yes
+      Protocol     2

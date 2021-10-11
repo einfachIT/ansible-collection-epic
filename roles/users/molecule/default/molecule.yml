@@ -1,0 +1,34 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: raspbian
+    image:  ${SYNC_SERVER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      raspbian:
+        users:
+        - username: testuser
+          fullname: test user
+          password: buaepolojoku
+          update_password: on_create
+          ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+          comment: Test User
+          group: testcommon
+
+        - username: testadmin
+          fullname: test admin
+          password: lepatevaxafo
+          update_password: on_create
+          ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+          comment: Test Admin User
+          group: admins
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
+verifier:
+  name: ansible

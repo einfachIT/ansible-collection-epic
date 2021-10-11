@@ -1,0 +1,48 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: "false"
+  tasks:
+
+    - name: Create a container
+      community.docker.docker_container:
+        name: raspbian
+        image: "{{ molecule_yml.platforms[0].image }}"
+        command: sleep infinity
+      register: docker
+
+    - name: prepare result
+      set_fact:
+        server:
+          results:
+            - "{{ docker.container }}"
+          changed: True
+      changed_when: "{{ docker.changed }}"
+
+    - when: server.changed | default(false) | bool
+      block:
+        - debug:
+            msg: "{{ server }}"
+        - name: Populate instance config dict
+          set_fact:
+            instance_conf_dict: {
+              'instance': "raspbian",
+              'ansible_user': "root",
+              'connection': "docker", }
+          with_items: "{{ server.results }}"
+          register: instance_config_dict
+
+        - name: Convert instance config dict to a list
+          set_fact:
+            instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
+
+        - name: Dump instance config
+          copy:
+            content: |
+              # Molecule managed
+
+              {{ instance_conf | to_json | from_json | to_yaml }}
+            dest: "{{ molecule_instance_config }}"
+            mode: 0600

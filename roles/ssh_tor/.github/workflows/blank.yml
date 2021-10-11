@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare environment
+        run: |
+          sudo apt update
+          sudo apt -y upgrade
+          curl -fsSL https://get.docker.com | sudo bash
+          sudo apt install python3 python3-pip virtualenv
+  
+      - name: Run tests
+        run: |
+          source source.me
+          export SYNC_SERVER_IMAGE="balenalib/amd64-debian-python"
+          molecule test

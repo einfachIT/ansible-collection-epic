@@ -1,0 +1,30 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: ~/.ssh/id_ssh_rsa
+ 
+  - name: add own pub key to allowed hosts
+    ansible.builtin.copy:
+      src: ~/.ssh/id_ssh_rsa.pub
+      dest: ~/.ssh/authorized_keys
+      remote_src: yes
+
+  - name: get onion hostname
+    ansible.builtin.command: cat /var/lib/tor/ssh/hostname
+    register: hostname
+    changed_when: false
+
+  - debug: msg="onion hostname is {{ hostname.stdout }}"
+
+  - name: test ssh connecion via onion hidden service
+    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_ssh_rsa -o ConnectTimeout=5 -q {{ hostname.stdout }} exit"
+    changed_when: false
+    register: result
+    retries: 3
+    delay: 10
+    until: result is not failed
+
