@@ -1,17 +1,16 @@
 ---
 - name: Destroy
-  hosts: localhost
+  hosts: containers
   connection: local
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
 
-
     - name: Destroy a container
       community.docker.docker_container:
-        name: ssh_tor
+        name: "{{ inventory_hostname }}"
         state: absent
-      register: docker
+      delegate_to: 127.0.0.1
 
 
     - name: Populate instance config

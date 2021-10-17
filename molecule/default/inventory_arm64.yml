@@ -6,7 +6,7 @@ local:
 
 containers:
   hosts:
-    ssh_tor:
+    epic-backup:
       ansible_connection: docker
       ansible_user: root
       image: balenalib/raspberrypi4-64-debian-python

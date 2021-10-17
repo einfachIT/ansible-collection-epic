@@ -7,7 +7,7 @@
 
   - name: Get infos on container
     docker_container_info:
-      name: ssh_tor
+      name: epic-backup
     register: result
 
   - name: Assert container is running
@@ -26,18 +26,27 @@
     when: result.exists
 
 - name: Verify ssh_tor
-  hosts: ssh_tor
+  hosts: epic-backup
   gather_facts: false
   tasks:
 
   - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
     community.crypto.openssh_keypair:
-      path: ~/.ssh/id_ssh_rsa
+      path: ~/.ssh/id_rsa
+ 
+  - name: create ssh config dir
+    ansible.builtin.file:
+      path: /home/testuser/.ssh
+      owner: testuser
+      group: testcommon
+      state: directory
  
   - name: add own pub key to allowed hosts
     ansible.builtin.copy:
-      src: ~/.ssh/id_ssh_rsa.pub
-      dest: ~/.ssh/authorized_keys
+      src: ~/.ssh/id_rsa.pub
+      dest: /home/testuser/.ssh/authorized_keys
+      owner: testuser
+      group: testcommon
       remote_src: yes
 
   - name: get onion hostname
@@ -47,10 +56,44 @@
 
   - debug: msg="onion hostname is {{ hostname.stdout }}"
 
-  - name: test ssh connecion via onion hidden service
-    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_ssh_rsa -o ConnectTimeout=5 -q {{ hostname.stdout }} -p 2222 exit"
+  - name: test ssh connection via onion hidden service
+    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -o ConnectTimeout=5 -q testuser@{{ hostname.stdout }} -p 2222 exit"
     changed_when: false
     register: result
     retries: 5
     delay: 10
     until: result is not failed
+
+- name: Verify rsync backup
+  hosts: epic-backup
+  gather_facts: false
+  tasks:
+
+  - name: create file to test backup
+    ansible.builtin.copy:
+      content: '# file to test backup capability'
+      dest: ~/testfile
+
+  - name: create destination backup dir
+    ansible.builtin.file:
+      path: /home/testuser/backups
+      owner: testuser
+      group: testcommon
+      state: directory
+
+  - name: test rsync via ssh onion hidden service
+    ansible.builtin.command: "rsync -ai -e 'ssh -p 2222' ~/testfile testuser@{{ hostname.stdout }}:~/backups"
+    register: rsync
+    changed_when: rsync.stdout != ""
+
+  - name: Get stats about backup destination testfile
+    stat:
+      path: /home/testuser/backups/testfile
+    changed_when: false
+    register: result
+
+
+  - name: Assert testfile was written to backup destination
+    assert:
+      that:
+      - result.stat.exists

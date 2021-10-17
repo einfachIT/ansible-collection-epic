@@ -1,5 +1,5 @@
 ---
-- hosts: ssh_tor
+- hosts: epic-backup
   gather_facts: yes
   connection: docker
   tasks:
