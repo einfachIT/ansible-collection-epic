@@ -12,3 +12,12 @@
     - name: "Include user mgmt"
       include_role:
         name: "einfachit.epicserver.users"
+        
+    - name: install rsync to backup container
+      apt:
+        name:
+          - rsync
+        update_cache: true
+        state: present
+      become: true
+      
