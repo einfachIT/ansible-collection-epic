@@ -5,7 +5,7 @@
     name:
       - tor
       - netcat-openbsd
-#      - torsocks
+      - rsync
       - openssh-server
     update_cache: true
     state: present
