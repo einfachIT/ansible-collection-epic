@@ -11,7 +11,7 @@
     state: present
   become: true
 
-- name: start ssh service
+- name: start sshd service
   service:
     name: ssh
     state: started
@@ -39,7 +39,7 @@
     mode: '0644'
     block: |
       HiddenServiceDir /var/lib/tor/ssh/
-      HiddenServicePort 22 127.0.0.1:22
+      HiddenServicePort 2222 127.0.0.1:22
   notify:
   - restart tor 
 
