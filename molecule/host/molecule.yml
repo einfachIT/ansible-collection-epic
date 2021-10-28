@@ -1,0 +1,20 @@
+---
+dependency:
+  name: shell
+  command: "ansible-galaxy collection install ."
+driver:
+  name: delegated
+platforms:
+  - name: ssh_tor
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
+  inventory:
+    links:
+      hosts: ${INVENTORY_FILE:-"inventory_arm64.yml"}
+  env:
+    MOLECULE_PROJECT_DIRECTORY: ${MOLECULE_PROJECT_DIRECTORY} 
+verifier:
+  name: ansible

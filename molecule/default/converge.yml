@@ -1,3 +1,9 @@
 ---
-- name: Converge
+- name: run container configuration playbook
   include: ../../playbooks/configure.yml
+
+#- name: run docker-host configuration playbook
+#  include: ../../playbooks/configure-server.yml
+
+
+

@@ -26,3 +26,10 @@ containers:
         ssh_pub_key:
         comment: Test Admin User
         group: admins
+
+server:
+  hosts:
+    epic-docker-host:
+      ansible_connection: docker
+      ansible_user: root
+      image: balenalib/amd64-debian-python
