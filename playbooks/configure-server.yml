@@ -1,8 +1,8 @@
 ---
 - name: setup epic docker container host
-  hosts: epic-docker-host
+  hosts: raspberries:!raw
   become: true
-  gather_facts: true
+  gather_facts: false
   tasks:
     - name: install prerequisites
       apt:
@@ -65,3 +65,62 @@
       service: 
         name: docker 
         state: restarted
+
+
+- name: install argon fan control scripts
+  hosts: argon_case
+  become: true
+  gather_facts: false
+  tasks:
+    - name: download argon fan control script
+      ansible.builtin.get_url:
+        url: https://download.argon40.com/argon1.sh
+        dest: /tmp/argon1.sh
+        mode: '0744'
+
+    - name: install argon fan control script
+      ansible.builtin.shell: /tmp/argon1.sh
+      args:
+        executable: /bin/bash
+        creates: /usr/bin/argonone-config
+
+- name: mount external usb disks
+  hosts: external_disk
+  become: true
+  gather_facts: true
+  tasks:
+
+    - name: Read device information (always use unit when probing)
+      community.general.parted: device=/dev/sda unit=MiB
+      register: sda_info
+
+    - debug:
+        var: sda_info
+    
+    - name: Remove all partitions from disk
+      community.general.parted:
+        device: /dev/sda
+        number: '{{ item.num }}'
+        state: absent
+      loop: '{{ sda_info.partitions }}'
+    
+    #- name: Extend an existing partition to fill all available space
+    #  community.general.parted:
+    #    device: /dev/sdb
+    #    number: "{{ sdb_info.partitions | length }}"
+    #    part_end: "100%"
+    #    resize: true
+    #    state: present
+
+    #- name: Create a new ext4 primary partition
+    #  community.general.parted:
+    #    device: /dev/sdb
+    #    number: 1
+    #    state: present
+    #    fs_type: ext4
+    #- name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
+    #  community.general.filesystem:
+    #    fstype: ext4
+    #    dev: /dev/sda
+    #    opts: -cc
+

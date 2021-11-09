@@ -1,23 +1,34 @@
 ---
 dependency:
   name: shell
-  command: "ansible-galaxy collection install ../"
-driver:
-  name: delegated
+  command: "ansible-galaxy collection install ."
 platforms:
   - name: epic-docker-host
     groups:
-      - container
       - raspberries
   - name: epic-backup
     groups:
       - container
+scenario:
+  name: int
+  converge_sequence:
+    - prepare
+    - converge
+driver:
+  name: delegated
 provisioner:
   name: ansible
   config_options:
     defaults:
       remote_tmp: /tmp/.ansible
+      gathering: smart
+      fact_caching: jsonfile
+      fact_caching_connection: /tmp/facts_cache
+      fact_caching_timeout: 3600
   inventory:
+    enable_plugins:
+      - nmap
+      - yam
     links:
       host_vars: ${INVENTORY_FILE:-"host_vars"}
       group_vars: ${INVENTORY_FILE:-"group_vars"}

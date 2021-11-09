@@ -1,0 +1,21 @@
+---
+
+galaxy_info:
+  role_name: argon_case
+  namespace: einfachit
+  author: bassinator
+  description: instlall fan controll and mount disk on m2 case
+  company: einfach IT
+
+  license: GNU GPLv3
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: debian
+      versions:
+      - buster
+
+  galaxy_tags: [raspberrypi]
+
+dependencies: []

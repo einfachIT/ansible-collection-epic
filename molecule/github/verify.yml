@@ -1,14 +1,15 @@
---- # This is an example playbook to execute Ansible tests.
+---
 
 - name: Verify host
-  hosts: localhost
+  hosts: all
   gather_facts: false
   tasks:
 
   - name: Get infos on container
     docker_container_info:
-      name: epic-backup
+      name: "{{ inventory_hostname }}"
     register: result
+    delegate_to: localhost
 
   - name: Assert container is running
     assert:
@@ -27,6 +28,7 @@
 
 - name: Verify ssh_tor
   hosts: epic-backup
+  connection: docker
   gather_facts: false
   tasks:
 
@@ -45,6 +47,7 @@
     ansible.builtin.copy:
       src: ~/.ssh/id_rsa.pub
       dest: /home/testuser/.ssh/authorized_keys
+      force: true
       owner: testuser
       group: testcommon
       remote_src: yes
@@ -57,12 +60,13 @@
   - debug: msg="onion hostname is {{ hostname.stdout }}"
 
   - name: test ssh connection via onion hidden service
-    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -o ConnectTimeout=5 -q testuser@{{ hostname.stdout }} -p 2222 exit"
+    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -o ConnectTimeout=10 -q testuser@{{ hostname.stdout }} -p 2222 exit"
     changed_when: false
     register: result
     retries: 5
     delay: 10
     until: result is not failed
+    # delegate_to: localhost
 
 - name: Verify rsync backup
   hosts: epic-backup

@@ -1,0 +1,17 @@
+---
+users:
+- username: testuser
+  fullname: test user
+  password: buaepolojoku
+  update_password: on_create
+  ssh_pub_key:
+  comment: Test User
+  group: testcommon
+          
+- username: testadmin
+  fullname: test admin
+  password: lepatevaxafo
+  update_password: on_create
+  ssh_pub_key:
+  comment: Test Admin User
+  group: admins

@@ -1,0 +1,23 @@
+---
+- hosts: container
+  gather_facts: false
+  connection: local
+  tasks:
+    
+    - name: Wait 300 seconds for docker api to get available
+      wait_for:
+        port: 2375
+        host: "{{ hostvars[docker_host].ansible_host }}"
+        # search_regex: Connected
+      vars:
+        ansible_connection: local
+      delegate_to: localhost
+      when: docker_host != 'localhost'
+
+    - name: Start container
+      docker_container:
+        name: "{{ inventory_hostname }}"
+        image: "{{ image }}"
+        command: ["sleep", "infinity"]
+        docker_host: "{{ docker_api }}"
+      delegate_to: localhost

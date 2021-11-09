@@ -1,0 +1,10 @@
+---
+
+- name: configure docker host 
+  include: ../../playbooks/configure-server.yml
+
+- name: provision docker container
+  include: ../../playbooks/provision-container.yml
+
+- name: configure docker container
+  include: ../../playbooks/configure-container.yml

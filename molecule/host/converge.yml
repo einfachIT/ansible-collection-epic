@@ -1,3 +1,0 @@
----
-- name: Converge
-  include: ../../playbooks/configure.yml

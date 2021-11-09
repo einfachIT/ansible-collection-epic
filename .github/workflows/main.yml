@@ -32,4 +32,4 @@ jobs:
           source venv/bin/activate
           pip install ansible molecule molecule-docker yamllint
           export INVENTORY_FILE=inventory_amd64.yml
-          molecule test
+          molecule test -s github

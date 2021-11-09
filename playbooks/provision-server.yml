@@ -1,0 +1,64 @@
+---
+- name: provision factory reset raspi and set hostname
+  hosts: raspberries
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Hold raspberrypi-kernel
+      dpkg_selections:
+        name: raspberrypi-kernel
+        selection: hold
+    - name: Upgrade the OS (apt-get upgrade)
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+  tasks:
+
+  - name: remove entry from known_hosts (initial hostname)
+    known_hosts:
+      name: "{{ ansible_host }}"
+      path: ~/.ssh/known_hosts
+      state: absent
+    delegate_to: localhost
+    throttle: 1
+    become: false
+    changed_when: false
+
+  - set_fact: ansible_host="{{ ansible_default_ipv4.address }}"
+
+  - name: Set a hostname
+    ansible.builtin.hostname:
+      name: "{{ hostname }}"
+      use: systemd
+
+  - name: update /etc/hosts
+    ansible.builtin.lineinfile:
+      path: /etc/hosts
+      regexp: '^127\.0\.0\.1'
+      line: "127.0.0.1 {{ hostname }}.local {{ hostname }}"
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: reboot server
+    ansible.builtin.command: reboot
+    async: 100
+    poll: 0
+    changed_when: false
+
+  - name: remove entry from known_hosts (ip-address, original hostkey which will change after reboot)
+    known_hosts:
+      name: "{{ ansible_host }}"
+      path: ~/.ssh/known_hosts
+      state: absent
+    delegate_to: localhost
+    become: false
+
+  - set_fact: ansible_host="{{ hostname }}.local"
+
+  - name: Wait 1000 seconds, but only start checking after 60 seconds
+    wait_for_connection:
+      delay: 60
+      timeout: 600

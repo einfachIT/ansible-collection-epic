@@ -21,7 +21,7 @@
   - debug: msg="onion hostname is {{ hostname.stdout }}"
 
   - name: test ssh connecion via onion hidden service
-    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_ssh_rsa -o ConnectTimeout=5 -q {{ hostname.stdout }} -p 2222 exit"
+    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_ssh_rsa -o ConnectTimeout=10 -q {{ hostname.stdout }} -p 2222 exit"
     changed_when: false
     register: result
     retries: 5

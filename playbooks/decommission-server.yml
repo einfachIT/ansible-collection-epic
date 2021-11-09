@@ -1,0 +1,37 @@
+---
+- name: factory reset raspberry pi
+  hosts: raspberries
+  become: true
+  gather_facts: true
+  tasks:
+
+  - name: reset machine to plain os by restoring image from a recovery partition
+    ansible.builtin.command: /boot/boot_to_recovery restore
+    async: 1000
+    poll: 0
+
+  - name: remove entry from known_hosts (initial hostname)
+    known_hosts:
+      name: "{{ ansible_host }}"
+      path: ~/.ssh/known_hosts
+      state: absent
+    delegate_to: localhost
+    throttle: 1
+    become: false
+    changed_when: false
+
+  - set_fact: ansible_host="{{ raw_hostname }}.local"
+
+  - name: remove entry from known_hosts (ip-address, original hostkey which will change after reboot)
+    known_hosts:
+      name: "{{ ansible_host }}"
+      path: ~/.ssh/known_hosts
+      state: absent
+    delegate_to: localhost
+    become: false
+    changed_when: false
+
+  - name: Wait 1000 seconds, but only start checking after 60 seconds
+    wait_for_connection:
+      delay: 60
+      timeout: 1000

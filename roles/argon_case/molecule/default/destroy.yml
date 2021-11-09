@@ -1,6 +1,6 @@
 ---
 - name: Destroy
-  hosts: all
+  hosts: localhost
   connection: local
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
@@ -8,9 +8,9 @@
 
     - name: Destroy a container
       community.docker.docker_container:
-        name: "{{ inventory_hostname }}"
+        name: raspbian
         state: absent
-      delegate_to: 127.0.0.1
+      register: docker
 
 
     - name: Populate instance config

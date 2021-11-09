@@ -1,0 +1,9 @@
+---
+- name: Destroy
+  hosts: all
+  gather_facts: false
+  tasks:
+
+    - name: detach loop device
+      ansible.builtin.command: losetup --detach-all
+

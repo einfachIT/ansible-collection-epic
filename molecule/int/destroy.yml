@@ -1,0 +1,23 @@
+---
+- name: check if instance exists
+  hosts: epic-docker-host
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - set_fact: ansible_host="{{ hostname }}.local"
+    
+    - name: check if instance already destroyed
+      wait_for_connection:
+        timeout: 10
+      register: out
+      failed_when: false
+    
+    - set_fact: check="{{ out }}"
+
+
+- name: configure docker container
+  include: ../../playbooks/decommission-server.yml
+  when: check.elapsed < 10
+
+

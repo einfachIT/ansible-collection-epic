@@ -1,0 +1,7 @@
+---
+ansible_connection: docker
+remote_tmp: /tmp/.ansible
+ansible_user: root
+image: balenalib/raspberrypi4-64-debian-python
+docker_host: localhost
+docker_api: "unix://var/run/docker.sock"

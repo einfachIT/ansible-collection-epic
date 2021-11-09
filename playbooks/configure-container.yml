@@ -1,8 +1,9 @@
 ---
-- hosts: epic-backup
-  gather_facts: yes
+- hosts: container:&epic-backup
+  gather_facts: false
   connection: docker
   tasks:
+
     - name: "Include ssh_tor"
       include_role:
         name: "einfachit.epicserver.ssh_tor"
