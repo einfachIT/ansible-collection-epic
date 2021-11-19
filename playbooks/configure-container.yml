@@ -4,7 +4,7 @@
   connection: docker
   tasks:
 
-    - name: install usefull software:
+    - name: install usefull software
       ansible.builtin.apt:
         name: vim
         state: present
