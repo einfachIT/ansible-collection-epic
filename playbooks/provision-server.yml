@@ -2,19 +2,27 @@
 - name: provision factory reset raspi and set hostname
   hosts: raspberries
   become: true
-  gather_facts: true
+  gather_facts: false
 
   pre_tasks:
+
+    - set_fact: ansible_host="{{ raw_hostname }}.local"
+
     - name: Hold raspberrypi-kernel
       dpkg_selections:
         name: raspberrypi-kernel
         selection: hold
+
     - name: Upgrade the OS (apt-get upgrade)
       apt:
         upgrade: yes
         update_cache: yes
 
+
   tasks:
+
+  - name: Gathering facts
+    setup:
 
   - name: remove entry from known_hosts (initial hostname)
     known_hosts:

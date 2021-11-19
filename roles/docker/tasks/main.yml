@@ -1,0 +1,61 @@
+---
+- name: install prerequisites
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+    - python3
+    - python3-pip
+    - lvm2
+
+- name: add docker repo GPG key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: install docker repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/debian buster stable
+    state: present
+
+- name: install docker
+  apt:
+    name: "{{item}}"
+    state: latest
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: grant ansible_user access to docker
+  user:
+    name: "{{ ansible_user }}"
+    append: true
+    groups:
+      - docker
+
+- name: configure to expose docker api vi tcp
+  ansible.builtin.lineinfile:
+    path: /lib/systemd/system/docker.service
+    regexp: '^ExecStart='
+    line: "ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock"
+  notify: restart docker
+
+- name: install python modules
+  pip:
+    name: docker
+    state: present
+
+- name: configure devicemapper volume driver
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: '0644'
+  notify: restart docker

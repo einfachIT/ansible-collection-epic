@@ -4,6 +4,11 @@
   connection: docker
   tasks:
 
+    - name: install usefull software:
+      ansible.builtin.apt:
+        name: vim
+        state: present
+
     - name: "Include ssh_tor"
       include_role:
         name: "einfachit.epicserver.ssh_tor"

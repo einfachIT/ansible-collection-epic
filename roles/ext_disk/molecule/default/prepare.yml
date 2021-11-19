@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+
+    - name: create lopback file
+      ansible.builtin.command: dd if=/dev/zero of=/tmp/loopbackfile.img bs=1M count=10
+
+    - name: setup loop device
+      ansible.builtin.command: losetup -fP /tmp/loopbackfile.img
+
+    - set_fact:
+        block_device: /root/loopbackfile.img

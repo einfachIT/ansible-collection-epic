@@ -4,7 +4,7 @@
   connection: local
   tasks:
     
-    - name: Wait 300 seconds for docker api to get available
+    - name: Wait for docker api to get available
       wait_for:
         port: 2375
         host: "{{ hostvars[docker_host].ansible_host }}"
@@ -14,10 +14,17 @@
       delegate_to: localhost
       when: docker_host != 'localhost'
 
+    - name: create backup volume
+      docker_volume:
+        name: home_backup
+      delegate_to: localhost
+
     - name: Start container
       docker_container:
         name: "{{ inventory_hostname }}"
         image: "{{ image }}"
+        volumes:
+          - home_backup:/home
         command: ["sleep", "infinity"]
         docker_host: "{{ docker_api }}"
       delegate_to: localhost

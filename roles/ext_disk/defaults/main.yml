@@ -1,0 +1,4 @@
+---
+ext_disk_device: /dev/loop0
+ext_disk_mountpoint: /data
+ext_disk_whipe: false
