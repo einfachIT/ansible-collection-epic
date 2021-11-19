@@ -1,7 +1,7 @@
 #!/bin/bash
 
-virtualenv -p python3 ~/virtualenvs/ansible_dev
-source ~/virtualenvs/ansible_dev/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 python -m pip install --upgrade pip
 pip install ansible molecule molecule-docker yamllint
 
