@@ -26,5 +26,6 @@
     user: "{{ item.username }}"
     state: present
     key: "{{ item.ssh_pub_key }}"
+  when: item.ssh_pub_key is defined
   loop: "{{ users }}"
 
