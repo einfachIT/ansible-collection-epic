@@ -64,3 +64,10 @@
       CheckHostIP  no
       Compression  yes
       Protocol     2
+
+- name: allow password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd.conf
+    regexp: '^#{0,1}PasswordAuthentication'
+    line: 'PasswordAuthentication yes'
+    state: present

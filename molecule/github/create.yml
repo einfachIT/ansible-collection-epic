@@ -1,15 +1,4 @@
 ---
 - name: create testcontainer
-  include: ../../playbooks/provision-container.yml
+  include: ../../playbooks/provision_container.yml
 
-#- name: create testserver (also as a container for testing)
-#  hosts: server
-#  gather_facts: false
-#  connection: local
-#  tasks:
-#    - name: Start container
-#      docker_container:
-#        name: "{{ inventory_hostname }}"
-#        image: "{{ image }}"
-#        command: ["sleep", "infinity"]
-#      delegate_to: 127.0.0.1

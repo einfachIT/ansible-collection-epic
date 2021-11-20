@@ -1,6 +1,6 @@
 ---
 - name: create testcontainer
-  include: ../../playbooks/provision-container.yml
+  include: ../../playbooks/provision_container.yml
 
 #- name: create testserver (also as a container for testing)
 #  hosts: server
