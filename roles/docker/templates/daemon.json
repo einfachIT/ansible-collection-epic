@@ -6,6 +6,6 @@
     "dm.thinp_metapercent=1",
     "dm.thinp_autoextend_threshold=80",
     "dm.thinp_autoextend_percent=20",
-    "dm.directlvm_device_force=false"
+    "dm.directlvm_device_force={{ docker_force_create_device }}"
   ]
 }
