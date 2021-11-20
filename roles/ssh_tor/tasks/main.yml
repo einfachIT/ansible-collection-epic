@@ -64,6 +64,8 @@
       CheckHostIP  no
       Compression  yes
       Protocol     2
+  become: yes
+  become_user: "{{ installation_os_user }}"
 
 - name: allow password authentication
   ansible.builtin.lineinfile:
