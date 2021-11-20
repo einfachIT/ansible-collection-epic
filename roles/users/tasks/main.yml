@@ -16,7 +16,7 @@
 - name: Add users
   ansible.builtin.user:
     name: "{{ item.username }}"
-    password: "{{ item.password }}"
+    password: "{{ item.password | default(omit) }}"
     comment: "{{ item.fullname }}"
     group: "{{ item.group }}"
   loop: "{{ users }}"

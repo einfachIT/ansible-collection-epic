@@ -52,10 +52,3 @@
   pip:
     name: docker
     state: present
-
-- name: configure devicemapper volume driver
-  ansible.builtin.template:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-    mode: '0644'
-  notify: restart docker

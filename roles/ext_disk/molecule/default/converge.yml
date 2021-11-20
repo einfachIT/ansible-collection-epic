@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
 
     - name: Display all variables/facts known for a host
@@ -9,6 +9,6 @@
         var: hostvars[inventory_hostname]
         verbosity: 4
 
-    - name: "Include argon_case"
+    - name: "Include ext_disk"
       include_role:
-        name: "argon_case"
+        name: "ext_disk"

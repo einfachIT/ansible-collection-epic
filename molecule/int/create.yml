@@ -16,6 +16,6 @@
     - set_fact: check="{{ out }}"
 
 - name: provision docker host
-  include: ../../playbooks/provision_server.yml
+  import_playbook: ../../playbooks/provision_server.yml
   when: check.elapsed > 10
 

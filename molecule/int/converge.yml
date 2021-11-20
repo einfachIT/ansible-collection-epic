@@ -2,11 +2,9 @@
 
 - name: configure docker host 
   import_playbook: ../../playbooks/configure_server.yml
-  vars:
-    docker_force_create_device: "true"
 
 - name: provision docker container
-  include: ../../playbooks/provision_container.yml
+  import_playbook: ../../playbooks/provision_container.yml
 
 - name: configure docker container
-  include: ../../playbooks/configure_container.yml
+  import_playbook: ../../playbooks/configure_container.yml

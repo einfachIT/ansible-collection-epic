@@ -12,6 +12,7 @@
         image: "{{ molecule_yml.platforms[0].image }}"
         command: sleep infinity
         privileged: true
+        container_default_behavior: no_defaults
       register: docker
 
     - name: prepare result
@@ -20,7 +21,7 @@
           results:
             - "{{ docker.container }}"
           changed: True
-      changed_when: "{{ docker.changed }}"
+      changed_when: docker.changed
 
     - when: server.changed | default(false) | bool
       block:
