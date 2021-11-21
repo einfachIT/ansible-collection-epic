@@ -11,14 +11,16 @@
   ansible.builtin.group:
     name: "{{ item.group }}"
     state: present
+  when: item.group is defined and item.state == "present"
   loop: "{{ users }}"
 
 - name: Add users
   ansible.builtin.user:
     name: "{{ item.username }}"
     password: "{{ item.password | default(omit) }}"
-    comment: "{{ item.fullname }}"
-    group: "{{ item.group }}"
+    comment: "{{ item.fullname | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
   loop: "{{ users }}"
 
 - name: Set authorized key
