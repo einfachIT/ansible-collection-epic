@@ -73,3 +73,10 @@
     regexp: '^#{0,1}PasswordAuthentication'
     line: 'PasswordAuthentication yes'
     state: present
+
+- name: get onion hostname
+  ansible.builtin.command: cat /var/lib/tor/ssh/hostname
+  register: hostname
+  changed_when: false
+
+- debug: msg="onion hostname is {{ hostname.stdout }}"
