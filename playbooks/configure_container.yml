@@ -11,13 +11,13 @@
 
     - name: "Include ssh_tor"
       include_role:
-        name: "einfachit.epicserver.ssh_tor"
+        name: "einfachit.epic.ssh_tor"
       vars:
         installation_os_user: root
 
     - name: "Include user mgmt"
       include_role:
-        name: "einfachit.epicserver.users"
+        name: "einfachit.epic.users"
         
     - name: install rsync to backup container
       apt:

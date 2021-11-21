@@ -1,4 +1,4 @@
-![molecule_test](https://github.com/einfachIT/ansible-collection-epicserver/actions/workflows/main.yml/badge.svg)
-# Ansible Collection - einfachit.epicserver
+![molecule_test](https://github.com/einfachIT/ansible-collection-epic/actions/workflows/main.yml/badge.svg)
+# Ansible Collection - einfachit.epic
 
 Documentation for the collection.
