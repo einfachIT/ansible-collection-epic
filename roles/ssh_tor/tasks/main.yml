@@ -24,9 +24,6 @@
   notify:
   - restart tor
 
-- debug:
-    var: onion_hidden_service_private_key_b64
-
 - name: write hidden service secret
   ansible.builtin.copy:
     content: "{{ onion_hidden_service_private_key_b64 | b64decode }}"
