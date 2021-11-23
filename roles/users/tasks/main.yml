@@ -10,6 +10,7 @@
 - name: Ensure groups exist
   ansible.builtin.group:
     name: "{{ item.group }}"
+    gid: "{{ item.gid | default(omit) }}"
     state: present
   when: item.group is defined and item.state == "present"
   loop: "{{ users }}"
@@ -20,6 +21,7 @@
     password: "{{ item.password | default(omit) }}"
     comment: "{{ item.fullname | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
     state: "{{ item.state | default(omit) }}"
   loop: "{{ users }}"
 

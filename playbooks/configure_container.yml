@@ -26,4 +26,12 @@
         update_cache: true
         state: present
       become: true
-      
+
+  post_tasks:
+
+    - name: get onion hostname
+      ansible.builtin.command: cat /var/lib/tor/ssh/hostname
+      register: hostname
+      changed_when: false
+    
+    - debug: msg="onion hostname is {{ hostname.stdout }}"

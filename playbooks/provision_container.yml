@@ -17,6 +17,7 @@
   - name: create backup volume
     docker_volume:
       name: home_backup
+      docker_host: "{{ docker_api }}"
     delegate_to: localhost
 
   - name: Start container
