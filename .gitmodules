@@ -1,9 +1,3 @@
-[submodule "roles/ssh-tor"]
-	path = roles/ssh_tor
-	url = https://github.com/einfachit/ansible-role-ssh-tor
 [submodule "roles/net_sync"]
 	path = roles/net_sync
 	url = git@github.com:Bassinator/ansible-role-net-sync.git
-[submodule "roles/tigerjython"]
-        path = roles/tigerjython
-        url = git@github.com:Bassinator/ansible-role-tigerjython.git
