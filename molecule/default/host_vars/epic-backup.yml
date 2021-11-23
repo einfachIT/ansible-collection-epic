@@ -8,6 +8,7 @@ users:
   ssh_pub_key:
   comment: Test User
   group: testcommon
+  state: present
           
 - username: testadmin
   fullname: test admin
@@ -16,3 +17,4 @@ users:
   ssh_pub_key:
   comment: Test Admin User
   group: admins
+  state: present
