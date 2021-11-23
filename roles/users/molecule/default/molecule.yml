@@ -17,6 +17,7 @@ provisioner:
           ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
           comment: Test User
           group: testcommon
+          state: present
 
         - username: testadmin
           fullname: test admin
@@ -24,6 +25,7 @@ provisioner:
           comment: Test Admin User
           group: admins
           groups: sudo
+          state: present
   config_options:
     defaults:
       remote_tmp: /tmp/.ansible

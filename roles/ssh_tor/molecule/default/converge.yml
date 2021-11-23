@@ -1,9 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include einfachit.ssh_tor"
-      include_role:
-        name: "einfachit.ssh_tor"
-      vars:
-        installation_os_user: root
