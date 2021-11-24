@@ -1,3 +1,9 @@
 [submodule "roles/net_sync"]
 	path = roles/net_sync
 	url = git@github.com:Bassinator/ansible-role-net-sync.git
+[submodule "roles/ssh_tor"]
+	path = roles/ssh_tor
+	url = git@github.com:einfachIT/ansible-role-ssh-tor.git
+[submodule "roles/tigerjython"]
+	path = roles/tigerjython
+	url = git@github.com:einfachIT/ansible-role-tigerjython.git

@@ -8,6 +8,7 @@ platforms:
   - name: epic-docker-host
     groups:
       - container
+      - docker-host
       - raspberries
   - name: epic-backup
     groups:

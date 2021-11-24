@@ -1,6 +1,13 @@
 ---
 - name: check if instance exists
-  hosts: epic-docker-host
+  hosts: container
+  gather_facts: false
+
+- name: decommission docker containers
+  import_playbook: ../../playbooks/decommission_container.yml
+
+- name: check if instance exists
+  hosts: raspberries
   connection: local
   gather_facts: false
   tasks:
@@ -17,7 +24,5 @@
 
 
 - name: configure docker container
-  import_playbook: ../../playbooks/decommission_server.yml
+  import_playbook: ../../playbooks/decommission_raspberries.yml
   when: check.elapsed < 10
-
-

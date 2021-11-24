@@ -6,9 +6,16 @@ platforms:
   - name: epic-docker-host
     groups:
       - raspberries
+    children:
+      - docker_host
   - name: epic-backup
     groups:
       - container
+  - name: epicraspberry
+    groups:
+      - raspberries
+    children:
+      - epicraspberries
 scenario:
   name: int
   converge_sequence:

@@ -1,0 +1,19 @@
+---
+- name: setup epic docker container host
+  hosts: epicraspberries
+  become: true
+  gather_facts: true
+  tasks:
+
+  - name: "setup ssh onion service"
+    include_role:
+      name: "einfachit.epic.ssh_tor"
+
+  - name: "setup network synchronisation service"
+    include_role:
+      name: "einfachit.epic.net_sync"
+
+  - name: "setup tigerjyton"
+    include_role:
+      name: "einfachit.epic.tigerjython"
+

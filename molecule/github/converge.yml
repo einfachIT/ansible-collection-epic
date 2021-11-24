@@ -2,8 +2,8 @@
 - name: run container configuration playbook
   import_playbook: ../../playbooks/configure_container.yml
 
-#- name: run docker-host configuration playbook
-#  import_playbook: ../../playbooks/configure_server.yml
+- name: run docker-host configuration playbook
+  import_playbook: ../../playbooks/configure_server.yml
 
 
 

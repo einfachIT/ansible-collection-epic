@@ -1,4 +1,4 @@
 ---
-hostname: "britney-spears"
+hostname: "limmat"
 ansible_host: "{{ hostname }}.local"
-raw_hostname: '0x52e884f2'
+raw_hostname: '0xf0364264'

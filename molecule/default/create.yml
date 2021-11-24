@@ -2,8 +2,8 @@
 - name: create testcontainer
   include: ../../playbooks/provision_container.yml
 
-#- name: create testserver (also as a container for testing)
-#  hosts: server
+#- name: create raspberries (also as container for local testing)
+#  hosts: raspberries
 #  gather_facts: false
 #  connection: local
 #  tasks:

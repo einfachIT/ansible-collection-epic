@@ -6,6 +6,7 @@ users:
   update_password: on_create
   comment: Test User
   group: testcommon
+  state: present
           
 - username: testadmin
   fullname: test admin
@@ -13,3 +14,4 @@ users:
   update_password: on_create
   comment: Test Admin User
   group: admins
+  state: present

@@ -1,6 +1,9 @@
 ---
 
 - name: configure docker host 
+  import_playbook: ../../playbooks/configure_epicraspberries.yml
+
+- name: configure docker host 
   import_playbook: ../../playbooks/configure_server.yml
 
 - name: provision docker container

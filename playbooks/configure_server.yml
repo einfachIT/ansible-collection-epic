@@ -1,6 +1,6 @@
 ---
-- name: setup epic docker container host
-  hosts: raspberries
+- name: configure external usb disk
+  hosts: ext_disk
   become: true
   gather_facts: false
   tasks:
@@ -11,6 +11,13 @@
     vars:
       ext_disk_device: /dev/sda
       hext_disk_mountpoint: /var/lib/docker
+
+
+- name: setup epic docker container host
+  hosts: docker_host
+  become: true
+  gather_facts: false
+  tasks:
 
   - name: "setup docker"
     include_role:
