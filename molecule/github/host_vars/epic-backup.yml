@@ -3,16 +3,18 @@ installation_os_user: root
 users:
 - username: testuser
   fullname: test user
-  password: buaepolojoku
+  password: "$6$i/1sVaw6n8xcJC$VPXk9cOPKVXteYmQxZPmDIHmvBTiukgbElQRKtw.E8HKXGf05htGegBlpepl4ueD4b7xtSF1B1NUaamfvDObn0" # peterpan
   update_password: on_create
   ssh_pub_key:
   comment: Test User
   group: testcommon
+  state: present
           
 - username: testadmin
   fullname: test admin
-  password: lepatevaxafo
+  password: "$6$i/1sVaw6n8xcJC$VPXk9cOPKVXteYmQxZPmDIHmvBTiukgbElQRKtw.E8HKXGf05htGegBlpepl4ueD4b7xtSF1B1NUaamfvDObn0" # peterpan
   update_password: on_create
   ssh_pub_key:
   comment: Test Admin User
   group: admins
+  state: present
