@@ -9,8 +9,11 @@
       port: 2375
       host: "{{ hostvars[docker_host].ansible_host }}"
       # search_regex: Connected
+      timeout: 10
     vars:
       ansible_connection: local
+    register: check
+    failed_when: false
     delegate_to: localhost
     when: docker_host != 'localhost'
 
@@ -18,17 +21,16 @@
     docker_container:
       name: "{{ inventory_hostname }}"
       docker_host: "{{ docker_api }}"
-      keep_volumes: "{{ docker_keep_volumes | default(true) }} "
       container_default_behavior: no_defaults
       state: absent
     delegate_to: localhost
+    when: check.elapsed < 10
 
   - name: delete backup volume
     docker_volume:
       name: home_backup
       state: absent
       docker_host: "{{ docker_api }}"
-    when: not (docker_keep_volumes | default(true))
     delegate_to: localhost
-
+    when: check.elapsed < 10 and not (docker_keep_volumes | default(true))
 

@@ -62,7 +62,9 @@
       path: ~/.ssh/known_hosts
       state: absent
     delegate_to: localhost
+    throttle: 1
     become: false
+    changed_when: false
 
   - set_fact: ansible_host="{{ hostname }}.local"
 

@@ -3,25 +3,26 @@
   hosts: container
   gather_facts: false
 
-- name: decommission docker containers
-  import_playbook: ../../playbooks/decommission_container.yml
-
 - name: check if instance exists
   hosts: raspberries
   connection: local
   gather_facts: false
   tasks:
 
-    - set_fact: ansible_host="{{ hostname }}.local"
-    
-    - name: check if instance already destroyed
-      wait_for_connection:
-        timeout: 10
-      register: out
-      failed_when: false
-    
-    - set_fact: check="{{ out }}"
+  - set_fact: ansible_host="{{ hostname }}.local"
+  
+  - name: check if instance already destroyed
+    wait_for_connection:
+      timeout: 10
+    register: out
+    failed_when: false
+  
+  - set_fact:
+      check="{{ out }}"
 
+- name: decommission docker containers
+  import_playbook: ../../playbooks/decommission_container.yml
+  when: hostvars['epic-docker-host'].check.elapsed < 10
 
 - name: configure docker container
   import_playbook: ../../playbooks/decommission_raspberries.yml
