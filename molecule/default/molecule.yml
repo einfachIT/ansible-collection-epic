@@ -4,12 +4,11 @@ dependency:
   command: "ansible-galaxy collection install .. --force"
 driver:
   name: delegated
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
 platforms:
-  - name: epic-docker-host
-    image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
-    groups:
-      - docker_host
-      - container
   - name: epic-backup
     image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:
