@@ -8,9 +8,8 @@ platforms:
   - name: epic-docker-host
     image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:
-      - container
       - docker_host
-      - raspberries
+      - container
   - name: epic-backup
     image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:

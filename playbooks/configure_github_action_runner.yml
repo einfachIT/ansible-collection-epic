@@ -1,0 +1,11 @@
+---
+- name: configure external usb disk
+  hosts: actions_runner
+  become: true
+  gather_facts: false
+  tasks:
+
+ - name: "setup github runner"
+    include_role:
+      name: "einfachit.epic.github_runner"
+
