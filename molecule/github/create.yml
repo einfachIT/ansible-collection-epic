@@ -1,4 +1,0 @@
----
-- name: create testcontainer
-  include: ../../playbooks/provision_container.yml
-

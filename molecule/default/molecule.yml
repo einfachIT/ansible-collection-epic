@@ -6,11 +6,13 @@ driver:
   name: delegated
 platforms:
   - name: epic-docker-host
+    image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:
       - container
       - docker-host
       - raspberries
   - name: epic-backup
+    image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:
       - container
 provisioner:

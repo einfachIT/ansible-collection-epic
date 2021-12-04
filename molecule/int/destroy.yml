@@ -1,9 +1,5 @@
 ---
 - name: check if instance exists
-  hosts: container
-  gather_facts: false
-
-- name: check if instance exists
   hosts: raspberries
   connection: local
   gather_facts: false

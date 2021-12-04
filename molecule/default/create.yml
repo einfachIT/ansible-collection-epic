@@ -1,4 +1,15 @@
 ---
+- name: set image name to use for provision
+  hosts: container
+  connection: local
+  gather_facts: false
+  tasks:
+
+  - set_fact:
+      image: "{{ item.image }}" 
+    when: item.name == inventory_hostname
+    with_items: "{{ molecule_yml.platforms }}"
+
 - name: create testcontainer
   include: ../../playbooks/provision_container.yml
 

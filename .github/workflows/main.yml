@@ -31,4 +31,5 @@ jobs:
           virtualenv -p python3 venv
           source venv/bin/activate
           pip install ansible molecule molecule-docker yamllint
-          molecule test -s github
+          export CONTAINER_IMAGE=balenalib/amd64-debian-python
+          molecule test

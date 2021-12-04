@@ -24,15 +24,18 @@
   - name: Gathering facts
     setup:
 
-  - name: remove entry from known_hosts (initial hostname)
+  - name: remove entry from known_hosts (initial hostname and ip adress)
     known_hosts:
-      name: "{{ ansible_host }}"
+      name: "{{ item }}"
       path: ~/.ssh/known_hosts
       state: absent
     delegate_to: localhost
     throttle: 1
     become: false
     changed_when: false
+    with_items:
+      - "{{ ansible_host }}"
+      - "{{ ansible_default_ipv4.address }}"
 
   - set_fact: ansible_host="{{ ansible_default_ipv4.address }}"
 
