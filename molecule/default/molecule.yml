@@ -7,7 +7,6 @@ driver:
 lint: |
   set -e
   yamllint .
-  ansible-lint
 platforms:
   - name: epic-backup
     image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
