@@ -20,6 +20,9 @@
       docker_host: "{{ docker_api }}"
     delegate_to: localhost
 
+  - debug:
+      var: image
+
   - name: Start container
     docker_container:
       name: "{{ inventory_hostname }}"

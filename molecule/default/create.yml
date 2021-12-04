@@ -11,7 +11,7 @@
     with_items: "{{ molecule_yml.platforms }}"
 
 - name: create testcontainer
-  include: ../../playbooks/provision_container.yml
+  import_playbook: ../../playbooks/provision_container.yml
 
 #- name: create raspberries (also as container for local testing)
 #  hosts: raspberries
