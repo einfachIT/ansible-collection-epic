@@ -7,3 +7,6 @@
 [submodule "roles/tigerjython"]
 	path = roles/tigerjython
 	url = git@github.com:einfachIT/ansible-role-tigerjython.git
+[submodule "roles/actions_runner"]
+        path = roles/actions_runner
+        url = git@github.com:einfachIT/ansible-role-actions-runner.git
