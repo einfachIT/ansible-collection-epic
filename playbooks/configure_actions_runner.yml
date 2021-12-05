@@ -1,0 +1,12 @@
+---
+- name: setup github actions runner
+  hosts: raspberries
+  become: true
+  gather_facts: true
+  tasks:
+
+  - name: "setup github actions runner"
+    include_role:
+      name: "einfachit.epic.actions_runner"
+    vars:
+      actions_runner_arch: arm
