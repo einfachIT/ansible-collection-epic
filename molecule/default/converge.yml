@@ -4,3 +4,6 @@
 
 - name: run docker-host configuration playbook
   import_playbook: ../../playbooks/configure_server.yml
+
+- name: run actions-runner configuration playbook
+  import_playbook: ../../playbooks/configure_actions_runner.yml

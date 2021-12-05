@@ -1,6 +1,6 @@
 ---
 - name: setup github actions runner
-  hosts: raspberries
+  hosts: actions_runner
   become: true
   gather_facts: true
   tasks:
