@@ -1,6 +1,7 @@
 ---
 - name: setup epic docker container host
   hosts: epicraspberries
+  strategy: free
   become: true
   gather_facts: true
   tasks:

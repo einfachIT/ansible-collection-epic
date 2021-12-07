@@ -1,6 +1,7 @@
 ---
 - name: provision factory reset raspi and set hostname
   hosts: raspberries
+  strategy: free
   become: true
   gather_facts: false
 
@@ -17,6 +18,7 @@
       apt:
         upgrade: yes
         update_cache: yes
+        lock_timeout: 600
 
 
   tasks:
@@ -26,16 +28,13 @@
 
   - name: remove entry from known_hosts (initial hostname and ip adress)
     known_hosts:
-      name: "{{ item }}"
+      name: "{{ ansible_host }}"
       path: ~/.ssh/known_hosts
       state: absent
     delegate_to: localhost
     throttle: 1
     become: false
     changed_when: false
-    with_items:
-      - "{{ ansible_host }}"
-      - "{{ ansible_default_ipv4.address }}"
 
   - set_fact: ansible_host="{{ ansible_default_ipv4.address }}"
 

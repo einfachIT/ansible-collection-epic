@@ -12,10 +12,14 @@
       timeout: 10
     vars:
       ansible_connection: local
-    register: check
     failed_when: false
     delegate_to: localhost
     when: docker_host != 'localhost'
+    notify:
+      - delete container
+      - delete backup volume
+
+  handlers:
 
   - name: Delete container
     docker_container:
@@ -24,7 +28,6 @@
       container_default_behavior: no_defaults
       state: absent
     delegate_to: localhost
-    when: check.elapsed < 10
 
   - name: delete backup volume
     docker_volume:
@@ -32,5 +35,5 @@
       state: absent
       docker_host: "{{ docker_api }}"
     delegate_to: localhost
-    when: check.elapsed < 10 and not (docker_keep_volumes | default(true))
+    when: not (docker_keep_volumes | default(true))
 

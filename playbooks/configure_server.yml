@@ -10,7 +10,7 @@
       name: "einfachit.epic.ext_disk"
     vars:
       ext_disk_device: /dev/sda
-      hext_disk_mountpoint: /var/lib/docker
+      ext_disk_mountpoint: /var/lib/docker
 
 
 - name: setup epic docker container host
