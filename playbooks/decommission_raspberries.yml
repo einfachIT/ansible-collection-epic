@@ -12,10 +12,10 @@
     async: 1000
     poll: 0
     notify:
-      - remove hostname from known_host
+      - remove hostname from known_hosts
       - set new ansible_hostname
       - wait to reboot after restore
-
+   
   handlers:
 
   - name: remove hostname from known_hosts
