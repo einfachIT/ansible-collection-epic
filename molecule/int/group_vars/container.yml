@@ -1,8 +1,0 @@
----
-ansible_connection: docker
-remote_tmp: /tmp/.ansible
-ansible_user: root
-image: balenalib/raspberrypi4-64-debian-python
-docker_host: epic-docker-host
-docker_api: "tcp://{{ hostvars[docker_host].ansible_host }}:2375"
-ansible_docker_extra_args: "-H={{ docker_api }}"

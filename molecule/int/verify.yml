@@ -1,7 +1,0 @@
---- # This is an example playbook to execute Ansible tests.
-
-- name: Verify host
-  hosts: localhost
-  gather_facts: false
-  tasks:
-
