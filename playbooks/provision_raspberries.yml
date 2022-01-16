@@ -1,7 +1,6 @@
 ---
 - name: provision factory reset raspi and set hostname
   hosts: raspberries
-  strategy: free
   become: true
   gather_facts: false
 

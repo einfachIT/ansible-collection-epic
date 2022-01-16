@@ -2,7 +2,6 @@
 - name: factory reset raspberry pi
   hosts: raspberries
   ignore_unreachable: yes
-  strategy: free
   become: true
   gather_facts: false
   tasks:
