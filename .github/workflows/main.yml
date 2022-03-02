@@ -31,6 +31,6 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install ansible molecule molecule-docker yamllint ansible-lint
-          ansible-galaxy install -f bassinator.localisation
+          ansible-galaxy install -f bassinator.localisation bassinator.pi_aseba 
           export CONTAINER_IMAGE=balenalib/amd64-debian-python
           molecule test
