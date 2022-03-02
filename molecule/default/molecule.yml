@@ -13,11 +13,11 @@ platforms:
     groups:
       - container
       - epic_backup
-  - name: epic-runner
+  - name: epic-raspberry
     image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
     groups:
       - container
-      - actions_runner
+      - epicraspberries
 provisioner:
   name: ansible
   config_options:

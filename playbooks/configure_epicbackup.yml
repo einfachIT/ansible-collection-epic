@@ -1,5 +1,5 @@
 ---
-- hosts: container:&epic_backup
+- hosts: epic_backup
   gather_facts: false
   connection: docker
   tasks:

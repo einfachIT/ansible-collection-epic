@@ -33,4 +33,4 @@
   - name: wait to reboot after restore
     wait_for_connection:
       delay: 60
-      timeout: 1000
+      timeout: 2000

@@ -24,8 +24,8 @@
 
   roles:
     - { role: bassinator.localisation }
-    - { role: bassinator.mosquitto }
-    - { role: bassinator.simplehttp }
+#    - { role: bassinator.mosquitto }
+#    - { role: bassinator.simplehttp }
 #    - { role: bassinator.autoarchive }
     - { role: bassinator.pi_aseba }
     - { role: einfachit.epic.ssh_tor }
