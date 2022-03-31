@@ -41,3 +41,4 @@
     - name: Install scratch3 OS package
       apt:
         name: 'scratch3'
+      when: ansible_architecture == "aarch64"
