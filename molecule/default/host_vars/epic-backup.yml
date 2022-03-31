@@ -18,3 +18,9 @@ users:
   comment: Test Admin User
   group: admins
   state: present
+
+docker_volumes:
+ - name: home_backup
+   path: /home
+
+docker_keep_volumes: false

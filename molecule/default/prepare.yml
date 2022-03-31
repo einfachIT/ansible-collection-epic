@@ -1,12 +1,16 @@
 ---
-- name: Prepare
-  hosts: actions_runner
+- name: Prepare all
+  hosts: all
   tasks:
 
   - name: upgrade packages
     ansible.builtin.apt:
       upgrade: true
       update_cache: true
+
+- name: Prepare epicraspberries
+  hosts: epicraspberries
+  tasks:
 
   - name: add user group
     user:
@@ -17,3 +21,9 @@
     user:
       name: 'pi'
       group: 'pi'
+      skeleton: "/etc/skel"
+      createhome: yes
+
+  - name: start udev daemon
+    ansible.builtin.command: /lib/systemd/systemd-udevd --daemon
+    changed_when: true

@@ -14,6 +14,7 @@
         name: "einfachit.epic.ssh_tor"
       vars:
         installation_os_user: root
+        installation_os_group: root
 
     - name: "Include user mgmt"
       include_role:

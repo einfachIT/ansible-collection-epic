@@ -12,15 +12,3 @@
 
 - name: create testcontainer
   import_playbook: ../../playbooks/provision_container.yml
-
-#- name: create raspberries (also as container for local testing)
-#  hosts: raspberries
-#  gather_facts: false
-#  connection: local
-#  tasks:
-#    - name: Start container
-#      docker_container:
-#        name: "{{ inventory_hostname }}"
-#        image: "{{ image }}"
-#        command: ["sleep", "infinity"]
-#      delegate_to: 127.0.0.1

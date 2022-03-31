@@ -16,19 +16,29 @@
 
   - name: create backup volume
     docker_volume:
-      name: home_backup
+      name: "{{ item.name }}"
       docker_host: "{{ docker_api }}"
     delegate_to: localhost
+    loop: "{{ docker_volumes | default([]) }}"
+
+  - name: construct mount strings
+    ansible.builtin.set_fact:
+      mount_string: "{{ item.name}}:{{ item.path }}"
+    loop: "{{ docker_volumes | default([]) }}"
+    register: mounts
+
+  - name: prepare list of mount_strings
+    ansible.builtin.set_fact:
+      mount_strings: "{{ mounts.results | map(attribute='ansible_facts.mount_string') | list }}"
 
   - debug:
-      var: image
+      var: mount_strings
 
   - name: Start container
     docker_container:
       name: "{{ inventory_hostname }}"
       image: "{{ image }}"
-      volumes:
-        - home_backup:/home
+      volumes: "{{ mount_strings }}"
       command: ["sleep", "infinity"]
       docker_host: "{{ docker_api }}"
       container_default_behavior: no_defaults
