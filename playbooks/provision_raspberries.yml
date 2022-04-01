@@ -8,8 +8,6 @@
 
     - set_fact: ansible_host="{{ raw_hostname }}.local"
 
-  pre_tasks:
-
     - name: update apt cache with sudo apt-get --allow-releaseinfo-change update
       command: sudo apt-get --allow-releaseinfo-change update
       changed_when: false
