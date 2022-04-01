@@ -8,10 +8,21 @@
 
     - set_fact: ansible_host="{{ raw_hostname }}.local"
 
+  pre_tasks:
+
+    - name: update apt cache with sudo apt-get --allow-releaseinfo-change update
+      command: sudo apt-get --allow-releaseinfo-change update
+      changed_when: false
+
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: apt
+    
     - name: Hold raspberrypi-kernel
       dpkg_selections:
         name: raspberrypi-kernel
         selection: hold
+      when: "'raspberrypi-kernel' in ansible_facts.packages"
 
     - name: Upgrade the OS (apt-get upgrade)
       apt:

@@ -7,7 +7,8 @@
   - name: Wait for docker api to get available
     wait_for:
       port: 2375
-      host: "{{ hostvars[docker_host].ansible_host }}"
+      host: "localhost"
+      # host: "{{ hostvars[docker_host].ansible_host }}"
       # search_regex: Connected
       timeout: 10
     vars:
@@ -15,20 +16,25 @@
     failed_when: false
     delegate_to: localhost
     when: docker_host != 'localhost'
+    register: docker_api_connect
 
-  - name: Delete container
-    docker_container:
-      name: "{{ inventory_hostname }}"
-      docker_host: "{{ docker_api }}"
-      container_default_behavior: no_defaults
-      state: absent
-    delegate_to: localhost
+  - block:
 
-  - name: delete volumes
-    docker_volume:
-      name: "{{ item.name }}"
-      state: absent
-      docker_host: "{{ docker_api }}"
-    delegate_to: localhost
-    when: not (docker_keep_volumes | default(true))
-    loop: "{{ docker_volumes | default([]) }}"
+    - name: Delete container
+      docker_container:
+        name: "{{ inventory_hostname }}"
+        docker_host: "{{ docker_api }}"
+        container_default_behavior: no_defaults
+        state: absent
+      delegate_to: localhost
+
+    - name: delete volumes
+      docker_volume:
+        name: "{{ item.name }}"
+        state: absent
+        docker_host: "{{ docker_api }}"
+      delegate_to: localhost
+      when: not (docker_keep_volumes | default(true))
+      loop: "{{ docker_volumes | default([]) }}"
+
+    when: docker_host == 'localhost' or not 'Timeout' in docker_api_connect.msg
