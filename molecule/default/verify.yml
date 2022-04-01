@@ -34,7 +34,9 @@
 
   - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
     community.crypto.openssh_keypair:
-      path: ~/.ssh/id_rsa
+      path: /home/testuser/.ssh/id_rsa
+      owner: testuser
+      group: testcommon
  
   - name: create ssh config dir
     ansible.builtin.file:
@@ -45,7 +47,7 @@
  
   - name: add own pub key to allowed hosts
     ansible.builtin.copy:
-      src: ~/.ssh/id_rsa.pub
+      src: /home/testuser/.ssh/id_rsa.pub
       dest: /home/testuser/.ssh/authorized_keys
       force: true
       owner: testuser
@@ -66,7 +68,8 @@
     retries: 5
     delay: 10
     until: result is not failed
-    # delegate_to: localhost
+    become: true
+    become_user: testuser
 
 - name: Verify rsync backup
   hosts: epic-backup
