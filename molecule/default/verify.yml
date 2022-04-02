@@ -1,6 +1,26 @@
 ---
+- name: Prepare ssh key
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
 
-- name: Verify host
+  - name: Create temporary directory to store ssh key
+    ansible.builtin.tempfile:
+      state: directory
+    register: ssh_tmp
+    delegate_to: localhost
+
+  - debug:
+      var: ssh_tmp.path
+    delegate_to: localhost
+
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: "{{ ssh_tmp.path }}/id_rsa"
+    delegate_to: localhost
+
+- name: Verify all host
   hosts: all
   gather_facts: false
   tasks:
@@ -26,38 +46,55 @@
       msg: "The container status is {{ result.container['State']['Status'] }}"
     when: result.exists
 
-- name: Verify ssh_tor
-  hosts: epic-backup
+- name: Verify raspberry
+  hosts: epic-raspberry
   connection: docker
   gather_facts: false
   tasks:
 
-  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
-    community.crypto.openssh_keypair:
-      path: /home/testuser/.ssh/id_rsa
-      owner: testuser
-      group: testcommon
- 
+  - name: create ssh config dir
+    ansible.builtin.file:
+      path: /home/pi/.ssh
+      owner: pi
+      group: pi
+      state: directory
+
+  - name: copy ssh private key to epicraspberry container
+    ansible.builtin.copy:
+      src: "{{ hostvars['localhost'].ssh_tmp.path }}/id_rsa"
+      dest: /home/pi/.ssh/id_rsa
+      owner: pi
+      group: pi
+      mode: "600"
+
+  - name: copy ssh public key to epicraspberry container
+    ansible.builtin.copy:
+      src: "{{ hostvars['localhost'].ssh_tmp.path }}/id_rsa.pub"
+      dest: /home/pi/.ssh/id_rsa.pub
+      owner: pi
+      group: pi
+
   - name: create ssh config dir
     ansible.builtin.file:
       path: /home/testuser/.ssh
       owner: testuser
       group: testcommon
       state: directory
+    delegate_to: epic-backup
  
   - name: add own pub key to allowed hosts
     ansible.builtin.copy:
-      src: /home/testuser/.ssh/id_rsa.pub
+      src: "{{ hostvars['localhost'].ssh_tmp.path }}/id_rsa.pub"
       dest: /home/testuser/.ssh/authorized_keys
-      force: true
       owner: testuser
       group: testcommon
-      remote_src: yes
+    delegate_to: epic-backup
 
   - name: get onion hostname
     ansible.builtin.command: cat /var/lib/tor/ssh/hostname
     register: hostname
     changed_when: false
+    delegate_to: epic-backup
 
   - debug: msg="onion hostname is {{ hostname.stdout }}"
 
@@ -69,36 +106,41 @@
     delay: 10
     until: result is not failed
     become: true
-    become_user: testuser
+    become_user: pi
 
 - name: Verify rsync backup
-  hosts: epic-backup
+  hosts: epic-raspberry
   gather_facts: false
   tasks:
 
   - name: create file to test backup
     ansible.builtin.copy:
       content: '# file to test backup capability'
-      dest: ~/testfile
+      dest: /home/pi/testfile
+      owner: pi
+      group: pi
 
   - name: create destination backup dir
     ansible.builtin.file:
-      path: /home/testuser/backups
+      path: /home/pi/backups
       owner: testuser
       group: testcommon
       state: directory
+    delegate_to: epic-backup
 
   - name: test rsync via ssh onion hidden service
-    ansible.builtin.command: "rsync -ai -e 'ssh -p 2222' ~/testfile testuser@{{ hostname.stdout }}:~/backups"
+    ansible.builtin.command: "rsync -ai -e 'ssh -p 2222' ~/testfile testuser@{{ hostname.stdout }}:~/backups/"
     register: rsync
     changed_when: rsync.stdout != ""
+    become: true
+    become_user: pi
 
   - name: Get stats about backup destination testfile
     stat:
       path: /home/testuser/backups/testfile
     changed_when: false
     register: result
-
+    delegate_to: epic-backup
 
   - name: Assert testfile was written to backup destination
     assert:
