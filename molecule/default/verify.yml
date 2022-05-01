@@ -46,6 +46,23 @@
       msg: "The container status is {{ result.container['State']['Status'] }}"
     when: result.exists
 
+- name: Verify backup service
+  hosts: epic-backup
+  connection: docker
+  gather_facts: false
+  tasks:  
+
+  - name: get infos about running services
+    ansible.builtin.service:
+      name: "{{ item }}"
+      state: started
+    check_mode: true
+    loop:
+      - ssh
+      - tor
+    register: service
+    failed_when: service.changed
+
 - name: Verify raspberry
   hosts: epic-raspberry
   connection: docker
