@@ -1,5 +1,5 @@
 ---
-- name: factory reset raspberry pi
+- name: decommission raspberries
   hosts: raspberries
   ignore_unreachable: yes
   become: true
