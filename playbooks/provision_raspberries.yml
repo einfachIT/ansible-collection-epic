@@ -1,5 +1,5 @@
 ---
-- name: provision factory reset raspi and set hostname
+- name: provision raspberries
   hosts: raspberries
   become: true
   gather_facts: false
