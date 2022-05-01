@@ -29,7 +29,7 @@
 
   - name: prepare list of mount_strings
     ansible.builtin.set_fact:
-      mount_strings: "{{ mounts.results | map(attribute='ansible_facts.mount_string') | list }}"
+      mount_strings: "{{ mounts.results | map(attribute='ansible_facts.mount_string') | list | default([]) }}"
 
   - debug:
       var: mount_strings
