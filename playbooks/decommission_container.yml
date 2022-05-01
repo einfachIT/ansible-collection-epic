@@ -1,5 +1,6 @@
 ---
-- hosts: container
+- name: decommission container
+  hosts: container
   gather_facts: false
   connection: local
   tasks:
@@ -7,8 +8,8 @@
   - name: Wait for docker api to get available
     wait_for:
       port: 2375
-      host: "localhost"
-      # host: "{{ hostvars[docker_host].ansible_host }}"
+      # host: "localhost"
+      host: "{{ hostvars[docker_host].ansible_host }}"
       # search_regex: Connected
       timeout: 10
     vars:
@@ -17,6 +18,9 @@
     delegate_to: localhost
     when: docker_host != 'localhost'
     register: docker_api_connect
+
+  - debug:
+      var: docker_api_connect
 
   - block:
 
@@ -37,4 +41,4 @@
       when: not (docker_keep_volumes | default(true))
       loop: "{{ docker_volumes | default([]) }}"
 
-    when: docker_host == 'localhost' or not 'Timeout' in docker_api_connect.msg
+    when: docker_host == 'localhost' or docker_api_connect.elapsed < 10
