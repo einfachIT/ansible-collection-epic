@@ -20,7 +20,7 @@ users:
   state: present
 
 docker_volumes:
- - name: home_backup
-   path: /home
+  - name: home_backup
+    path: /home
 
 docker_keep_volumes: false
