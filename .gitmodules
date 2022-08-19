@@ -13,3 +13,6 @@
 [submodule "roles/users"]
 	path = roles/users
 	url = git@github.com:einfachIT/ansible-role-users.git
+[submodule "roles/pi_aseba"]
+	path = roles/pi_aseba
+	url = git@github.com:einfachIT/ansible-role-pi-aseba.git
