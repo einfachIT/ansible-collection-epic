@@ -27,6 +27,7 @@
         upgrade: yes
         update_cache: yes
         lock_timeout: 600
+      retries: 2
 
 
   tasks:
