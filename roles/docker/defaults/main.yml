@@ -1,1 +1,2 @@
 ---
+docker_expose_api: true

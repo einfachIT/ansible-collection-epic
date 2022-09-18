@@ -46,6 +46,7 @@
     path: /lib/systemd/system/docker.service
     regexp: '^ExecStart='
     line: "ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock"
+  when: docker_expose_api
   notify: restart docker
 
 - name: install python modules
