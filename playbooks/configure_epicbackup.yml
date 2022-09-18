@@ -2,24 +2,20 @@
 - hosts: epic_backup
   gather_facts: false
   connection: docker
-  tasks:
+  pre_tasks:
 
     - name: install usefull software
       ansible.builtin.apt:
         name: vim
         state: present
-
-    - name: "Include ssh_tor"
-      include_role:
-        name: "einfachit.epic.ssh_tor"
+  roles:
+    - role: einfachit.epic.ssh_tor
       vars:
-        installation_os_user: root
-        installation_os_group: root
+         installation_os_user: root
+         installation_os_group: root
+    - einfachit.epic.users
 
-    - name: "Include user mgmt"
-      include_role:
-        name: "einfachit.epic.users"
-        
+  tasks:
     - name: install rsync to backup container
       apt:
         name:
