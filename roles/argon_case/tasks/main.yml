@@ -11,4 +11,3 @@
     executable: /bin/bash
     creates: /usr/bin/argonone-config
   register: argon_install
-  changed_when: argon_install.stderr == ""

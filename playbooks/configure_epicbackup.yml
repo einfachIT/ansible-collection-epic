@@ -4,25 +4,18 @@
   connection: docker
   pre_tasks:
 
-    - name: install usefull software
+    - name: install needed software
       ansible.builtin.apt:
-        name: vim
+        name:
+          - rsync
         state: present
+
   roles:
     - role: einfachit.epic.ssh_tor
       vars:
          installation_os_user: root
          installation_os_group: root
     - einfachit.epic.users
-
-  tasks:
-    - name: install rsync to backup container
-      apt:
-        name:
-          - rsync
-        update_cache: true
-        state: present
-      become: true
 
   post_tasks:
 
