@@ -18,7 +18,6 @@
     - einfachit.epic.users
 
   post_tasks:
-
     - name: get onion hostname
       ansible.builtin.command: cat /var/lib/tor/ssh/hostname
       register: hostname
