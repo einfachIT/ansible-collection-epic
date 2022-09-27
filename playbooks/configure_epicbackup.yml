@@ -10,12 +10,24 @@
           - rsync
         state: present
 
-  roles:
-    - role: einfachit.epic.ssh_tor
+  tasks:
+    - name: include role epic.users
+      ansible.builtin.include_role:
+        name: einfachit.epic.users
+
+    - name: include role epic.ssh_tor
+      ansible.builtin.include_role:
+        name: einfachit.epic.ssh_tor
       vars:
          installation_os_user: root
          installation_os_group: root
-    - einfachit.epic.users
+
+#  roles:
+#    - role: einfachit.epic.ssh_tor
+#      vars:
+#         installation_os_user: root
+#         installation_os_group: root
+#    - einfachit.epic.users
 
   post_tasks:
     - name: get onion hostname
