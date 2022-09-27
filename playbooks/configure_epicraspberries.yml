@@ -28,8 +28,4 @@
         name: einfachit.epic.pi_aseba
       when: ansible_distribution_release == 'bullseye'
 
-    - name: restart tor
-      ansible.builtin.service:
-        name: tvncserver-x11-service
-        state: started
 
