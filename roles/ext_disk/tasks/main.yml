@@ -31,7 +31,9 @@
 - name: Create a ext4 filesystem on
   community.general.filesystem:
     fstype: ext4
+    force: true
     dev: "{{ ext_disk_device }}"
+  when: not partitions.skipped
 
 - name: "create mountpoint"
   ansible.builtin.file:
