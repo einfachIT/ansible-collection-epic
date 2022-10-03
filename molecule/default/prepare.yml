@@ -14,8 +14,8 @@
         - rsync
       state: present
 
-- name: Prepare epicraspberries
-  hosts: epicraspberries
+- name: Prepare raspberries
+  hosts: raspberries
   tasks:
 
   - name: add user group

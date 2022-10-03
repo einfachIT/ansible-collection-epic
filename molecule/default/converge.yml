@@ -7,3 +7,6 @@
 
 - name: run container configuration playbook
   import_playbook: ../../playbooks/configure_epicraspberries.yml
+
+- name: run actions_runner configuration playbook
+  import_playbook: ../../playbooks/configure_actions_runner.yml

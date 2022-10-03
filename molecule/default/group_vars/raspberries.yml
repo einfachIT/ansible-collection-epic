@@ -1,4 +1,0 @@
----
-ansible_connection: ssh
-ansible_user: pi
-ansible_password: raspberry

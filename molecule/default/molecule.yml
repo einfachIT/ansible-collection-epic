@@ -18,6 +18,13 @@ platforms:
     groups:
       - container
       - epicraspberries
+      - raspberries
+  - name: actions-runner
+    image:  ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
+    groups:
+      - container
+      - raspberries
+      - actions_runner
 provisioner:
   name: ansible
   config_options:
@@ -29,5 +36,8 @@ provisioner:
       group_vars: ${INVENTORY_FILE:-"group_vars"}
   env:
     MOLECULE_PROJECT_DIRECTORY: ${MOLECULE_PROJECT_DIRECTORY} 
+  ansible_args:
+    - --extra-vars
+    - "actions_runner_token=${ACCESS_TOKEN} github_api_user=Bassinator actions_runner_arch=${CPU_ARCHITECTURE:-'arm64'}"
 verifier:
   name: ansible

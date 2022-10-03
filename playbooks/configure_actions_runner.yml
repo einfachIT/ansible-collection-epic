@@ -3,10 +3,8 @@
   hosts: actions_runner
   become: true
   gather_facts: true
-  tasks:
+  roles:
 
-  - name: "setup github actions runner"
-    include_role:
-      name: "einfachit.epic.actions_runner"
+  - role: einfachit.epic.actions_runner
     vars:
-      actions_runner_arch: arm
+      actions_runner_arch: arm64

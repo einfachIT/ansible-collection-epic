@@ -1,0 +1,52 @@
+---
+- name: Cleanup
+  hosts: actions_runner
+  ignore_unreachable: true
+  gather_facts: false
+
+  pre_tasks:
+
+  - name: Wait 10 seconds for connection
+    ansible.builtin.wait_for_connection:
+      timeout: 10
+    register: connection
+    failed_when: false
+
+  - name: debug
+    ansible.builtin.debug:
+      var: connection
+
+  - name: End cleanup if unreachable
+    ansible.builtin.meta: end_host
+    when: connection.elapsed >= 10
+
+  tasks:
+  - name: Get github runner remove token
+    ansible.builtin.uri:
+      url: "https://api.github.com/orgs/einfachIT/actions/runners/remove-token"
+      force_basic_auth: true
+      user: "{{ github_api_user }}"
+      password: "{{ actions_runner_token }}"
+      method: POST
+      status_code: 201
+      return_content: true
+      headers:
+        Accept: application/vnd.github.v3+json
+    register: response
+    no_log: true
+
+  - name: Set token variables
+    ansible.builtin.set_fact:
+      remove_token: "{{ response.json.token }}"
+
+  - name: Remove runner
+    ansible.builtin.command: >
+      ./config.sh remove
+        --unattended
+        --url https://github.com/einfachIT
+        --token {{ remove_token }}
+    become: true
+    changed_when: false
+    args:
+      chdir: /home/pi/actions-runner/
+    failed_when: false
