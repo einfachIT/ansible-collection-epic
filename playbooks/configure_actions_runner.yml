@@ -6,5 +6,3 @@
   roles:
 
   - role: einfachit.epic.actions_runner
-    vars:
-      actions_runner_arch: arm64

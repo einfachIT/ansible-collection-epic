@@ -35,6 +35,7 @@ jobs:
           pip install ansible molecule molecule-docker yamllint ansible-lint
           ansible-galaxy install -f bassinator.localisation bassinator.pi_aseba 
           export CONTAINER_IMAGE=balenalib/amd64-debian-python
+          export CPU_ARCHITECTURE=x64
           molecule test
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
