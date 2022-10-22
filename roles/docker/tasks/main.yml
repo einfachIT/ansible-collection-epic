@@ -49,6 +49,12 @@
   when: docker_expose_api
   notify: restart docker
 
+- name: Install and upgrade pip
+  ansible.builtin.pip:
+    name: pip
+    extra_args: --upgrade
+    executable: pip3
+
 - name: install python modules
   pip:
     name: docker
