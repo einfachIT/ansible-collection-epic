@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include net_sync"
+      include_role:
+        name: "net_sync"

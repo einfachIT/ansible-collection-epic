@@ -1,0 +1,7 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: start udev daemon
+      ansible.builtin.command: /lib/systemd/systemd-udevd --daemon
+      changed_when: true

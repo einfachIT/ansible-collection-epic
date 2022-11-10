@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: add user group
+      user:
+        name: 'pi'
+        state: present
+    - name: add user
+      user:
+        name: 'pi'
+        group: 'pi'

@@ -1,0 +1,39 @@
+---
+
+- name: install flatpak
+  ansible.builtin.apt:
+    name:
+      - flatpak
+    update_cache: yes
+    state: present
+
+- name: copy udev rules for mobsya
+  ansible.builtin.copy:
+    src: 99-mobsya.rules
+    dest: /etc/udev/rules.d/99-mobsya.rules
+    mode: 0644
+  register: mobsya_rules
+  notify: update udev rules
+
+- name: add flatpak repo 
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+- name: Install aseba distribution
+  community.general.flatpak:
+    name: org.mobsya.ThymioSuite
+    state: present
+
+- name: download aseba logo
+  ansible.builtin.copy:
+    src: aseba.png
+    dest: '/usr/share/pixmaps/aseba.png'
+    mode: 0644
+
+- name: create desktop Entry
+  ansible.builtin.copy:
+    src: aseba.desktop
+    dest: /usr/share/applications/
+    mode: 0644

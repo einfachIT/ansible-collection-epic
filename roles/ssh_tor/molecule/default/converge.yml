@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include einfachit.ssh_tor"
+      ansible.builtin.include_role:
+        name: "einfachit.ssh_tor"

@@ -1,0 +1,12 @@
+sshargs = -C
+
+ignore = Path .cache/*
+ignore = Name unison.log
+ignore = Path .unison/*
+ignore = Path .config
+ignore = Path .*
+
+ignore = Name {*/,.*/}.git
+
+
+batch = true

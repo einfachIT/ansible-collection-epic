@@ -1,0 +1,26 @@
+---
+language: python
+services: docker
+
+env:
+  global:
+    - ROLE_NAME: net_sync
+  matrix:
+    - MOLECULE_DISTRO: debian10
+
+install:
+  # Install test dependencies.
+  - pip install molecule yamllint ansible-lint flake8 testinfra docker molecule-docker
+
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - cd ../
+  - mv ansible-role-net-sync bassinator.$ROLE_NAME
+  - cd bassinator.$ROLE_NAME
+
+script:
+  # Run tests.
+  - molecule test
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

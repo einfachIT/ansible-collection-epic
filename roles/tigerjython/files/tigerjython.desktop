@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Tiger
+Icon=/usr/share/pixmaps/tjlogo.png
+Terminal=false
+Type=Application
+Categories=Development;IDE;
+StartupNotify=true
+Exec=java -jar tigerjython2.jar
+Path=/opt/tigerjython

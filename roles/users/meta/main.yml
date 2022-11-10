@@ -1,0 +1,21 @@
+---
+
+galaxy_info:
+  role_name: users
+  namespace: einfachit
+  author: bassinator
+  description: simple user management with ansible
+  company: einfach IT
+
+  license: GNU GPLv3
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: debian
+      versions:
+      - buster
+
+  galaxy_tags: [raspberry]
+
+dependencies: []

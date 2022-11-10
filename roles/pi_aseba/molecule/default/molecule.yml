@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: raspberry
+    image: ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
+scenario:
+  name: default
+  converge_sequence:
+    - prepare
+    - converge
+verifier:
+  name: testinfra

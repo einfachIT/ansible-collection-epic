@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include bassinator.tigerjython"
+      ansible.builtin.include_role:
+        name: "einfachit.epic.tigerjython"

@@ -1,0 +1,6 @@
+exclude_paths:
+  - .github/
+  - .git/
+  - venv/
+warn_list:  # or 'skip_list' to silence them completely
+  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern

@@ -1,0 +1,37 @@
+---
+- name: install software packages
+  apt:
+    name:
+      - openssh-client
+    update_cache: true
+    state: present
+  become: true
+
+- name: Ensure groups exist
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    gid: "{{ item.gid | default(omit) }}"
+    state: present
+  when: item.group is defined and item.state == "present"
+  loop: "{{ users }}"
+
+- name: Add users
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    password: "{{ item.password | default(omit) }}"
+    comment: "{{ item.fullname | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    skeleton: /etc/skel
+    shell: /bin/bash
+  loop: "{{ users }}"
+
+#- name: Set authorized key
+#  ansible.posix.authorized_key:
+#    user: "{{ item.username }}"
+#    state: present
+#    key: "{{ item.ssh_pub_key }}"
+#  when: item.ssh_pub_key is defined
+#  loop: "{{ users }}"
+

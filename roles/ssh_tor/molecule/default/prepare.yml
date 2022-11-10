@@ -1,0 +1,12 @@
+---
+- name: prepare
+  hosts: all
+  tasks:
+    - name: add user group
+      ansible.builtin.user:
+        name: 'pi'
+        state: present
+    - name: add user
+      ansible.builtin.user:
+        name: 'pi'
+        group: 'pi'

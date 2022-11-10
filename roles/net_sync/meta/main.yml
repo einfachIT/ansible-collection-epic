@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: net_sync
+  author: Bassinator
+  namespace: einfachit
+  description: backup and restore home directory to unison server
+  company: einfach IT
+
+  license: GNU GPLv3
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: debian
+      versions:
+        - 10
+
+  galaxy_tags: [raspbery, noobs, reset, raspbian]
+
+dependencies: []

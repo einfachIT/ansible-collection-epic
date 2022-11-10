@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+
+  - name: Install java
+    ansible.builtin.apt:
+      update_cache: true

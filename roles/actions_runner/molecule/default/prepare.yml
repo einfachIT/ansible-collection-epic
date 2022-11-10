@@ -1,0 +1,15 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Add user group
+      ansible.builtin.user:
+        name: 'pi'
+        state: present
+    - name: Add user
+      ansible.builtin.user:
+        name: 'pi'
+        group: 'pi'
+    - name: Apt update cache
+      ansible.builtin.apt:
+        update_cache: true

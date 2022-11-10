@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Aseba
+Icon=/usr/share/pixmaps/aseba.png
+Terminal=false     
+Type=Application
+Categories=Development;IDE;
+StartupNotify=true
+Exec=flatpak run org.mobsya.ThymioSuite
+Path=/home/pi

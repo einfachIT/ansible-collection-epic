@@ -1,0 +1,8 @@
+---
+installation_os_user: "pi"
+installation_os_group: "pi"
+actions_runner_arch: arm64
+actions_runner_token: ""
+actions_runner_version: 2.297.0
+actions_runner_configure: false
+actions_runner_setup_service: false

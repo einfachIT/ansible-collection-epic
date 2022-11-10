@@ -1,0 +1,66 @@
+---
+
+- name: Install git
+  ansible.builtin.apt:
+    name:
+      - git
+      - sshpass
+    state: present
+  become: true
+
+- name: Get github runner registration token
+  ansible.builtin.uri:
+    url: "https://api.github.com/orgs/einfachIT/actions/runners/registration-token"
+    force_basic_auth: true
+    user: "{{ github_api_user }}"
+    password: "{{ actions_runner_token }}"
+    method: POST
+    status_code: 201
+    return_content: true
+    headers:
+      Accept: application/vnd.github.v3+json
+  no_log: false
+  register: response
+
+- name: Set token variables
+  ansible.builtin.set_fact:
+    registration_token: "{{ response.json.token }}"
+
+- name: Create runner install directory
+  ansible.builtin.file:
+    path: "/home/{{ installation_os_user }}/actions-runner/"
+    owner: "{{ installation_os_user }}"
+    group: "{{ installation_os_group }}"
+    mode: "0755"
+    state: directory
+
+- name: Download actions-runner package
+  ansible.builtin.unarchive:
+    src: "https://github.com/actions/runner/releases/download/\
+      v{{ actions_runner_version }}/actions-runner-linux-\
+      {{ actions_runner_arch }}-{{ actions_runner_version }}.tar.gz"
+    dest: "/home/{{ installation_os_user }}/actions-runner/"
+    owner: "{{ installation_os_user }}"
+    group: "{{ installation_os_group }}"
+    remote_src: true
+  notify:
+    - Install dependencies
+
+- name: Force all notified handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Configure runner
+  ansible.builtin.command: >
+    ./config.sh
+      --unattended
+      --url https://github.com/einfachIT
+      --token {{ registration_token }}
+  become: true
+  become_user: "{{ installation_os_user }}"
+  args:
+    chdir: /home/{{ installation_os_user }}/actions-runner/
+    creates: "/home/{{ installation_os_user }}/actions-runner/.runner"
+  when: actions_runner_token != ""
+  notify:
+    - Install runner service
+    - Start runner service

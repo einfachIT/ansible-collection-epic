@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include actions_runner"
+      ansible.builtin.include_role:
+        name: "einfachit.actions_runner"

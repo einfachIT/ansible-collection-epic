@@ -1,0 +1,5 @@
+---
+installation_os_user: "pi"
+installation_os_group: "pi"
+
+net_sync_hostname: "xyz.onion"

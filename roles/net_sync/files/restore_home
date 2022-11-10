@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+if ! ssh -q -o BatchMode=yes syncuser@epicraspberries.ddns.net "$@" true
+then
+  echo "RECHNER NOCH NICHT REGISTRIERT. PASSWORT NOTWENDIG"
+  if [ ! -f "$HOME/.ssh/id_rsa" ]
+  then
+    ssh-keygen -q -f "$HOME/.ssh/id_rsa" -N ""
+  fi
+  ssh-copy-id syncuser@epicraspberries.ddns.net
+  echo "RECHNER ERFOLGREICH REGISTRIERT"
+fi
+unison home_sync -root /home/pi -root ssh://syncuser@epicraspberries.ddns.net//mnt/usb/$(hostname) -force ssh://syncuser@epicraspberries.ddns.net//mnt/usb/$(hostname) -ignorearchives

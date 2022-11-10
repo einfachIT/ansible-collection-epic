@@ -8,11 +8,11 @@
     installation_os_group: pi
 
   roles:
-#    - { role: bassinator.localisation }
 #    - { role: bassinator.mosquitto }
 #    - { role: bassinator.simplehttp }
 #    - { role: bassinator.autoarchive }
 #    - { role: einfachit.epic.pi_aseba }
+    - { role: einrachit.epic.localisation }
     - { role: einfachit.epic.ssh_tor }
     - { role: einfachit.epic.net_sync }
     - { role: einfachit.epic.tigerjython }

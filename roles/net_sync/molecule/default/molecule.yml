@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint -x 503
+  flake8
+platforms:
+  - name: debian10
+    image: debian:buster
+provisioner:
+  name: ansible
+scenario:
+  name: default
+  converge_sequence:
+    - prepare
+    - converge
+verifier:
+  name: testinfra

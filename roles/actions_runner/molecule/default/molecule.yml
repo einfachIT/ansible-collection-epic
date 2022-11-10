@@ -1,0 +1,34 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: raspios
+    image: ${CONTAINER_IMAGE:-"balenalib/raspberrypi4-64-debian-python"}
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible
+  ansible_args:
+    - --extra-vars
+    - "actions_runner_token=${ACCESS_TOKEN} github_api_user=Bassinator actions_runner_arch=${CPU_ARCHITECTURE:-'arm64'}"
+scenario:
+  name: default
+  test_sequence:
+    - dependency
+    - lint
+    - destroy
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - cleanup
+    - destroy
+verifier:
+  name: ansible

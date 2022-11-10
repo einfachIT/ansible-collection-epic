@@ -1,0 +1,5 @@
+---
+installation_os_user: "pi"
+installation_os_group: "pi"
+
+onion_hidden_service_private_key_b64: ""  # to be overwritten in playbook or extra_vars

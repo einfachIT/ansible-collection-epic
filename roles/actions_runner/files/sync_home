@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+if ! ssh -q -o BatchMode=yes syncuser@epicraspberries.ddns.net "$@" true
+then
+  echo "RECHNER NOCH NICHT REGISTRIERT. restore_home notwendig, oder falls es dein erster Rechner ist ein backup_home. Wenn du aber bereits daten auf dem SyncServer hast, werden diese mit backup_home unwiderruflich gelöscht!!!"
+  exit 0
+fi
+unison home_sync -root /home/pi -root ssh://syncuser@epicraspberries.ddns.net//mnt/usb/$(hostname)

@@ -1,0 +1,36 @@
+---
+- name: Cleanup
+  hosts: all
+  ignore_unreachable: true
+
+  pre_tasks:
+  - name: Get github runner remove token
+    ansible.builtin.uri:
+      url: "https://api.github.com/orgs/einfachIT/actions/runners/remove-token"
+      force_basic_auth: true
+      user: "{{ github_api_user }}"
+      password: "{{ actions_runner_token }}"
+      method: POST
+      status_code: 201
+      return_content: true
+      headers:
+        Accept: application/vnd.github.v3+json
+    register: response
+    no_log: true
+
+  - name: Set token variables
+    ansible.builtin.set_fact:
+      remove_token: "{{ response.json.token }}"
+
+  tasks:
+    - name: Remove runner
+      ansible.builtin.command: >
+        ./config.sh remove
+          --unattended
+          --url https://github.com/einfachIT
+          --token {{ remove_token }}
+      become: true
+      become_user: pi
+      changed_when: false
+      args:
+        chdir: /home/pi/actions-runner/

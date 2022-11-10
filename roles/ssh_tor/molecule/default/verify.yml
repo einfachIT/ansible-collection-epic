@@ -1,0 +1,52 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+
+  - name: get infos about running services
+    ansible.builtin.service:
+      name: "{{ item }}"
+      state: started
+    check_mode: true
+    register: services
+    loop:
+      - ssh
+      - tor
+
+  - name: Assert expected services running
+    ansible.builtin.assert:
+      that: item.changed == false
+    loop: "{{ services.results }}"
+
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: "/home/pi/.ssh/id_ssh_rsa"
+      owner: pi
+      group: pi
+
+  - name: add own pub key to allowed hosts
+    ansible.builtin.copy:
+      src: "/home/pi/.ssh/id_ssh_rsa.pub"
+      dest: "/home/pi/.ssh/authorized_keys"
+      mode: '0644'
+      remote_src: true
+      owner: pi
+      group: pi
+
+  - name: get onion hostname
+    ansible.builtin.command: cat /var/lib/tor/ssh/hostname
+    register: hostname
+    changed_when: false
+
+  - name: output onion hostename
+    ansible.builtin.debug: msg="onion hostname is {{ hostname.stdout }}"
+
+  - name: test ssh connecion via onion hidden service
+    ansible.builtin.command: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_ssh_rsa -o ConnectTimeout=10 -q {{ hostname.stdout }} -p 2222 exit"
+    changed_when: false
+    register: result
+    retries: 5
+    delay: 10
+    until: result is not failed
+    become: true
+    become_user: pi

@@ -1,0 +1,19 @@
+---
+
+- name: Install java
+  ansible.builtin.apt:
+    name:
+      # - default-jdk
+      - openjdk-11-jdk
+
+- name: Create tigerjython directory
+  ansible.builtin.file:
+    path: '/opt/tigerjython'
+    state: directory
+    mode: '0755'
+
+- name: Download tigerjython2
+  ansible.builtin.get_url:
+    url: "{{ tj_download_url }}"
+    dest: '/opt/tigerjython/tigerjython2.jar'
+    mode: '0644'
