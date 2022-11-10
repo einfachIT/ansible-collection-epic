@@ -13,9 +13,10 @@
     mode: '0755'
 
 - name: Download tigerjython2
-  ansible.builtin.unarchive:
-    src: "{{ tj_download_url }}"
-    dest: /opt/tigerjython/
+  ansible.builtin.get_url:
+    url: "{{ tj_download_url }}"
+    dest: '/opt/tigerjython/tigerjython2.jar'
+    mode: '0644'
 
 - name: download tigerjython logo
   copy:
