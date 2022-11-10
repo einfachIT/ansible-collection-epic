@@ -17,3 +17,13 @@
     url: "{{ tj_download_url }}"
     dest: '/opt/tigerjython/tigerjython2.jar'
     mode: '0644'
+
+- name: download tigerjython logo
+  copy:
+    src: logo.png
+    dest: '/usr/share/pixmaps/tjlogo.png'
+
+- name: create desktop Entry
+  copy:
+    src: tigerjython.desktop
+    dest: /usr/.local/share/applications/
