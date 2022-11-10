@@ -26,4 +26,4 @@
 - name: create desktop Entry
   copy:
     src: tigerjython.desktop
-    dest: /usr/.local/share/applications/
+    dest: /usr/share/applications/
