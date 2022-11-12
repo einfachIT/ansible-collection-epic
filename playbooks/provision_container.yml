@@ -38,6 +38,7 @@
     docker_container:
       name: "{{ inventory_hostname }}"
       image: "{{ image }}"
+      restart_policy: always
       volumes: "{{ mount_strings }}"
       command: ["sleep", "infinity"]
       docker_host: "{{ docker_api }}"
