@@ -1,7 +1,7 @@
 ---
-- name: install prerequisites
-  apt:
-    name: "{{item}}"
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name: "{{ item }}"
     state: present
     update_cache: yes
   loop:
@@ -11,51 +11,61 @@
     - gnupg-agent
     - software-properties-common
     - python3
-    - python3-pip
+    - python3-setuptools
     - lvm2
 
-- name: add docker repo GPG key
-  apt_key:
+- name: Add docker repo GPG key
+  ansible.builtin.apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
-- name: install docker repository
-  apt_repository:
+- name: Install docker repository
+  ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/debian buster stable
     state: present
 
-- name: install docker
-  apt:
-    name: "{{item}}"
-    state: latest
+- name: Install docker
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
     update_cache: yes
   loop:
     - docker-ce
     - docker-ce-cli
     - containerd.io
 
-- name: grant ansible_user access to docker
-  user:
+- name: Grant ansible_user access to docker
+  ansible.builtin.user:
     name: "{{ ansible_user }}"
     append: true
     groups:
       - docker
 
-- name: configure to expose docker api vi tcp
+- name: Configure to expose docker api vi tcp
   ansible.builtin.lineinfile:
     path: /lib/systemd/system/docker.service
     regexp: '^ExecStart='
     line: "ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock"
   when: docker_expose_api
-  notify: restart docker
+  notify: Restart docker
 
-- name: Install and upgrade pip
+- name: Download pip installer
+  ansible.builtin.get_url:
+    url: "https://bootstrap.pypa.io/get-pip.py"
+    dest: "/tmp/get-pip.py"
+    mode: '0440'
+  notify: Install pip
+
+#- name: Install pip
+#  ansible.builtin.pip:
+#    name: pip
+#    extra_args: --upgrade
+#    executable: pip3
+
+- name: Force all notified handlers to run
+  ansible.builtin.meta: flush_handlers
+
+- name: Install python modules
   ansible.builtin.pip:
-    name: pip
-    extra_args: --upgrade
-    executable: pip3
-
-- name: install python modules
-  pip:
     name: docker
     state: present

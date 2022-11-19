@@ -1,2 +1,3 @@
 ---
 docker_expose_api: true
+ansible_user: root

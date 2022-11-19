@@ -1,6 +1,10 @@
 ---
-- name: restart docker
-  service:
+
+- name: Install pip
+  ansible.builtin.command:
+    cmd: "python3 /tmp/get-pip.py"
+
+- name: Restart docker
+  ansible.builtin.service:
     name: docker
-    daemon_reload: yes
     state: restarted
