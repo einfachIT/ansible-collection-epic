@@ -4,7 +4,7 @@
   ansible.builtin.command:
     cmd: "python3 /tmp/get-pip.py"
 
-- name: Restart docker
+- name: Reload docker
   ansible.builtin.service:
     name: docker
     state: reloaded
