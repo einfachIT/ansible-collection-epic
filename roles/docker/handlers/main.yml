@@ -5,10 +5,9 @@
     cmd: "python3 /tmp/get-pip.py"
 
 - name: Reload docker
-  ansible.builtin.service:
-    name: docker
-    state: reloaded
-  when: not unit_test
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  when: not unit_test # service does not really work inside the docker container
 
 - name: Restart docker
   ansible.builtin.service:
