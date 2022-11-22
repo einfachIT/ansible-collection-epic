@@ -49,6 +49,7 @@
   when: docker_expose_api
   notify: 
     - Reload docker
+    - Restart docker
 
 - name: Download pip installer
   ansible.builtin.get_url:
