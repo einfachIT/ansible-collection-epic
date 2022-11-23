@@ -3,3 +3,4 @@ ansible_connection: docker
 ansible_user: root
 docker_host: localhost
 docker_api: "unix://var/run/docker.sock"
+docker_expose_api: False
