@@ -15,7 +15,7 @@ provisioner:
   inventory:
     host_vars:
       raspbian:
-        unit_test: True
+        docker_expose_api: False
   config_options:
     defaults:
       remote_tmp: /tmp/.ansible

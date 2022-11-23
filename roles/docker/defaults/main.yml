@@ -1,4 +1,3 @@
 ---
-docker_expose_api: true
+docker_expose_api: True
 ansible_user: root
-unit_test: false
