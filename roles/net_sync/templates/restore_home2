@@ -11,4 +11,4 @@ then
   ssh-copy-id -p 2222 $(hostname)@{{ net_sync_hostname }}
   echo "RECHNER ERFOLGREICH REGISTRIERT"
 fi
-rsync -e 'ssh -p 2222' --exclude-from ~/.backup_excludes -avzP $(hostname)@{{ net_sync_hostname }}:~/ /home/pi
+rsync -e 'ssh -p 2222' --exclude="lost+found"  -avzP $(hostname)@{{ net_sync_hostname }}:~/ /home/pi/
