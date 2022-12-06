@@ -1,48 +1,12 @@
 ---
 
-- name: install unison and avahi-utils
+- name: install avahi-utils
   apt:
     name:
-      - unison
       - avahi-utils
     update_cache: true
     state: present
   become: true
-
-- name: create unison config directory
-  file:
-    path: "/home/{{ installation_os_user }}/.unison"
-    owner: "{{ installation_os_user }}"
-    group: "{{ installation_os_group }}"
-    state: directory
-
-- name: copy unison sync profile
-  copy:
-    src: "{{ item }}"
-    dest: "/home/{{ installation_os_user }}/.unison/"
-    owner: "{{ installation_os_user }}"
-    group: "{{ installation_os_group }}"
-  with_items:
-    - home_sync.prf
-
-- name: copy unison sync profile
-  copy:
-    src: "{{ item }}"
-    dest: "/home/{{ installation_os_user }}/.backup_excludes"
-    owner: "{{ installation_os_user }}"
-    group: "{{ installation_os_group }}"
-  with_items:
-    - backup_excludes
-
-- name: copy sync scripts
-  copy:
-    src: "{{ item }}"
-    dest: "/usr/bin/"
-    mode: '777'
-  with_items:
-    - backup_home
-    - restore_home
-    - sync_home
 
 - name: copy new version sync scripts
   template:
@@ -50,7 +14,8 @@
     dest: "/usr/bin/"
     mode: '777'
   with_items:
-    - backup_home2
+    - backup_home
+    - restore_home
 
 - name: copy switch_user script
   copy:
