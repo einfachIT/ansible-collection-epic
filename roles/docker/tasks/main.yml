@@ -21,7 +21,7 @@
 
 - name: Install docker repository
   ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/debian buster stable
+    repo: "deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
     state: present
 
 - name: Install docker
