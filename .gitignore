@@ -3,3 +3,4 @@ venv
 *.swp
 *.tar.gz
 *.icloud
+.DS_Store
