@@ -8,7 +8,7 @@
     state: present
   become: true
 
-- name: copy new version sync scripts
+- name: copy sync scripts
   template:
     src: "{{ item }}"
     dest: "/usr/bin/"
@@ -16,6 +16,15 @@
   with_items:
     - backup_home
     - restore_home
+
+- name: copy backup excludes
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ installation_os_user }}/.backup_excludes"
+    owner: "{{ installation_os_user }}"
+    group: "{{ installation_os_group }}"
+  with_items:
+    - backup_excludes
 
 - name: copy switch_user script
   copy:
