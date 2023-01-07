@@ -55,6 +55,7 @@
       --unattended
       --url https://github.com/einfachIT
       --token {{ registration_token }}
+      --labels {{ actions_runner_labels }}
   become: true
   become_user: "{{ installation_os_user }}"
   args:
