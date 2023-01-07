@@ -6,7 +6,7 @@
 
   pre_tasks:
 
-    - set_fact: ansible_host="{{ raw_hostname }}.local"
+    - set_fact: ansible_host="{{ raw_hostname }}.{{ epic_domain }}"
 
     - name: update apt cache with sudo apt-get --allow-releaseinfo-change update
       command: sudo apt-get --allow-releaseinfo-change update
@@ -57,7 +57,7 @@
     ansible.builtin.lineinfile:
       path: /etc/hosts
       regexp: '^127\.0\.0\.1'
-      line: "127.0.0.1 {{ hostname }}.local {{ hostname }}"
+      line: "127.0.0.1 {{ hostname }}.{{ epic_domain }} {{ hostname }}"
       owner: root
       group: root
       mode: '0644'
@@ -78,7 +78,7 @@
     become: false
     changed_when: false
 
-  - set_fact: ansible_host="{{ hostname }}.local"
+  - set_fact: ansible_host="{{ hostname }}.{{ epic_domain }}"
 
   - name: Wait 600 seconds, but only start checking after 60 seconds
     wait_for_connection:

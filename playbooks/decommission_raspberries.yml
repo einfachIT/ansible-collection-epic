@@ -28,7 +28,7 @@
     changed_when: false
 
   - name: set new ansible_hostname
-    set_fact: ansible_host="{{ raw_hostname }}.local"
+    set_fact: ansible_host="{{ raw_hostname }}.{{ epic_domain }}"
 
   - name: wait to reboot after restore
     wait_for_connection:
