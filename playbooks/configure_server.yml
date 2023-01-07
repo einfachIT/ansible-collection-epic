@@ -16,7 +16,7 @@
 - name: setup epic docker container host
   hosts: docker_host
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
 
   - name: "setup docker"

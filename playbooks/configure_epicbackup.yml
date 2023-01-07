@@ -1,6 +1,6 @@
 ---
 - hosts: epic_backup
-  gather_facts: false
+  gather_facts: true
   connection: docker
   pre_tasks:
 
