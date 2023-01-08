@@ -1,4 +1,2 @@
 ---
-installation_os_user: "root"
-installation_os_group: "root"
 actions_runner_labels: ""
