@@ -1,0 +1,25 @@
+---
+- name: Poweron raspberrie PIs
+  hosts: raspberries
+  become: false
+  gather_facts: false
+  tasks:
+
+  - name: Check powerstate
+    ansible.builtin.command: >
+      snmpget -v 2c -c
+      {{ snmp_community }}
+      {{ switch_ip }}
+      1.3.6.1.2.1.105.1.1.1.3.1.{{ switch_port_id }}
+    register: pwr_state
+    delegate_to: localhost
+
+  - name: Power on Pi 
+    ansible.builtin.command: >
+      snmpset -v 2c -c
+      {{ snmp_community }}
+      {{ switch_ip }}
+      1.3.6.1.2.1.105.1.1.1.3.1.{{ switch_port_id }}
+      i 2
+    when: pwr_state.stdout[-1] == "1"
+    delegate_to: localhost
