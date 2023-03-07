@@ -5,6 +5,7 @@
     name:
       - git
       - sshpass
+      - snmp
     state: present
   become: true
 
