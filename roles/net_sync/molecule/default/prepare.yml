@@ -2,11 +2,11 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: add user group
-      user:
+    - name: Add user group
+      ansible.builtin.user:
         name: 'pi'
         state: present
-    - name: add user
-      user:
+    - name: Add user
+      ansible.builtin.user:
         name: 'pi'
         group: 'pi'

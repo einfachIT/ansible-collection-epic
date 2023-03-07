@@ -1,0 +1,15 @@
+sshargs = -C
+
+root = /home/pi
+root = ssh://{{ hostname }}@{{ net_sync_hostname }}:2222/.
+
+ignore = Path .cache/*
+ignore = Path .unison/*
+
+ignore = Name {*/,.*/}.git
+
+auto = true
+batch = true
+repeat = watch
+copyonconflict = true
+prefer = newer

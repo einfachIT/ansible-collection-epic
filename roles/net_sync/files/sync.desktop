@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=home_sync
+Exec=sh -c 'unison home_sync > /home/pi/.unison/home_sync.log 2> /home/pi/.unison/home_sync.err'
+Path=/home/pi
+StartupNotify=false
+Terminal=false

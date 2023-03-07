@@ -1,0 +1,8 @@
+[Unit]
+Description=Home Sync Service
+ConditionFileNotEmpty=/sbin/sync.sh
+
+[Service]
+ExecStartPre=/bin/sh -c 'until ping -c1 google.com; do sleep 10; done;'
+ExecStart=/sbin/sync.sh /home/pi .
+Type=oneshot

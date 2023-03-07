@@ -7,10 +7,9 @@ lint: |
   set -e
   yamllint .
   ansible-lint -x 503
-  flake8
 platforms:
   - name: debian10
-    image: debian:buster
+    image: debian:bullseye
 provisioner:
   name: ansible
 scenario:
