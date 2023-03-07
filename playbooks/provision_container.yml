@@ -43,4 +43,5 @@
       command: ["sleep", "infinity"]
       docker_host: "{{ docker_api }}"
       container_default_behavior: no_defaults
+      privileged: "{{ docker_container_privileged }}"
     delegate_to: localhost
