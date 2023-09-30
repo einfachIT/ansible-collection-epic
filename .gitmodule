@@ -1,0 +1,3 @@
+[submodule "localisation"]
+    path = roles/localisation
+    url = git@github.com:einfachIT/ansible-role-localisation.git
