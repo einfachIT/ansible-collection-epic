@@ -1,6 +1,6 @@
 ---
 
-- name: Install avahi-utils
+- name: Install needed software
   ansible.builtin.apt:
     name:
       - avahi-utils
