@@ -1,0 +1,15 @@
+---
+- name: dpkg-reconfigure keyboard-configuration
+  become: true
+  command: /usr/sbin/dpkg-reconfigure -f noninteractive keyboard-configuration
+  when: ansible_os_family == 'Debian'
+
+- name: dpkg-reconfigure locales
+  become: true
+  command: /usr/sbin/dpkg-reconfigure -f noninteractive locales
+  when: ansible_os_family == 'Debian'
+
+- name: trigger udev input change
+  become: true
+  command: udevadm trigger --subsystem-match=input --action=change
+  when: ansible_lsb.id is defined and ( ansible_lsb.id == 'Raspbian' or ansible_lsb.id == 'Debian' )

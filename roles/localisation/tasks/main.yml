@@ -1,0 +1,37 @@
+---
+
+- name: Set timezone to
+  timezone:
+    name: '{{ loc_timezone }}'
+
+- name: install needed software
+  become: true
+  ansible.builtin.apt:
+    name:
+      - keyboard-configuration
+      - locales
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: configure locales to generate
+  ansible.builtin.lineinfile:
+    path: /etc/locale.gen
+    regexp: '^#.*{{ language }}.{{ encoding }}.*$'
+    line: '{{ language }}.{{ encoding }} {{ encoding }}'
+
+- name: write keyboard and language configuration
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /etc/default/{{ item }}
+    force: true
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
+  with_items:
+    - keyboard
+    - locale
+  notify:
+    - dpkg-reconfigure keyboard-configuration
+    - dpkg-reconfigure locales
+    - trigger udev input change

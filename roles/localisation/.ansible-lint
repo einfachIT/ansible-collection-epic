@@ -1,0 +1,9 @@
+exclude_paths:
+  - .github/
+  - .git/
+  - venv/
+warn_list:  # or 'skip_list' to silence them completely
+  - '208'  # File permissions unset or incorrect
+  - '301'  # Commands should not change things if nothing needs doing
+  - '501'
+  - experimental  # all rules tagged as experimental
