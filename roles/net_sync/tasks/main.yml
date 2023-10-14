@@ -4,7 +4,7 @@
   ansible.builtin.apt:
     name:
       - avahi-utils
-      - unison
+      # - unison
       - inotify-tools
       - ocaml-nox
       - build-essential
@@ -54,7 +54,7 @@
     owner: "{{ installation_os_user }}"
     group: "{{ installation_os_group }}"
     mode: '0644'
-  when: net_sync_home_sync_service
+  when: net_sync_home_autosync
 
 - name: Copy unison sync profile
   ansible.builtin.template:
@@ -63,28 +63,4 @@
     owner: "{{ installation_os_user }}"
     group: "{{ installation_os_group }}"
     mode: '0644'
-  when: net_sync_home_sync_service
-
-- name: Copy switch user script
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/usr/sbin/"
-    mode: '755'
-  with_items:
-    - switch-user.sh
-
-- name: Copy backup excludes
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/home/{{ installation_os_user }}/.backup_excludes"
-    owner: "{{ installation_os_user }}"
-    group: "{{ installation_os_group }}"
-    mode: '0644'
-  with_items:
-    - backup_excludes
-
-- name: Change prompt to reflect hostname change immediatly
-  ansible.builtin.replace:
-    path: "/home/{{ installation_os_user }}/.bashrc"
-    regexp: '@\\h'
-    replace: "@$(hostname)"
+  when: net_sync_home_autosync
