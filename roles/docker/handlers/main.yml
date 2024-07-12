@@ -1,9 +1,5 @@
 ---
 
-- name: Install pip
-  ansible.builtin.command:
-    cmd: "python3 /tmp/get-pip.py"
-
 - name: Reload docker
   ansible.builtin.systemd:
     daemon_reload: yes
