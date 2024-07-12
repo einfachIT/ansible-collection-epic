@@ -14,7 +14,7 @@
     state: absent
   loop: '{{ dev_info.partitions }}'
   register: partitions
-  when: dev_info.partitions[0].fstype != "ext4"
+  when: dev_info.partitions[0].fstype != "ext4" or ext_disk_force_whipe
 
 - name: Create a new ext4 primary partition)
   community.general.parted:
