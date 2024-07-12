@@ -1,3 +1,4 @@
 ---
+ext_disk_force_whipe: false
 ext_disk_device: /dev/loop0
 ext_disk_mountpoint: /var/lib/docker
