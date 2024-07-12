@@ -12,6 +12,7 @@
     - software-properties-common
     - python3
     - python3-setuptools
+    - python3-pip
     - lvm2
 
 - name: Add docker repo GPG key
@@ -50,20 +51,6 @@
   notify: 
     - Reload docker
     - Restart docker
-
-- name: Download pip installer
-  ansible.builtin.get_url:
-    url: "https://bootstrap.pypa.io/get-pip.py"
-    dest: "/tmp/get-pip.py"
-    mode: '0440'
-  notify: Install pip
-
-- name: Configure pip intall to allow breadking system packages
-  ansible.builtin.copy:
-    content: |
-      [global]
-      break-system-packages = true
-    dest: ~/.config/pip/pip.conf
 
 #- name: Install pip
 #  ansible.builtin.pip:
