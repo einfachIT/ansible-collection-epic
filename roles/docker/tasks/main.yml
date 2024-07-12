@@ -58,6 +58,13 @@
     mode: '0440'
   notify: Install pip
 
+- name: Configure pip intall to allow breadking system packages
+  ansible.builtin.copy:
+    content: |
+      [global]
+      break-system-packages = true
+    dest: ~/.config/pip/pip.conf
+
 #- name: Install pip
 #  ansible.builtin.pip:
 #    name: pip
