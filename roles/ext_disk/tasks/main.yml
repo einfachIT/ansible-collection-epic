@@ -3,46 +3,52 @@
   apt:
     name: parted
 
-- name: Read device information (always use unit when probing)
-  community.general.parted: "device={{ ext_disk_device }} unit=MiB"
-  register: dev_info
 
-- name: Remove all partitions from disk
-  community.general.parted:
-    device: "{{ ext_disk_device }}"
-    number: '{{ item.num }}'
-    state: absent
-  loop: '{{ dev_info.partitions }}'
-  register: partitions
-  when: dev_info.partitions[0].fstype != "ext4" or ext_disk_force_whipe
+- include_tasks: devices.yml
+  loop: "{{ ext_disk_devices }}"
+  loop_control:
+    loop_var: device
 
-- name: Create a new ext4 primary partition)
-  community.general.parted:
-    device: "{{ ext_disk_device }}"
-    number: 1
-    part_start: 0%
-    part_end: 100%
-    label: gpt
-    name: docker
-    fs_type: "ext4"
-    state: present
-  when: not partitions.skipped
-
-- name: Create a ext4 filesystem on
-  community.general.filesystem:
-    fstype: ext4
-    force: true
-    dev: "{{ ext_disk_device }}"
-  when: not partitions.skipped
-
-- name: "create mountpoint"
-  ansible.builtin.file:
-    path: "{{ ext_disk_mountpoint }}"
-    state: directory
-
-- name: Mount partition
-  ansible.posix.mount:
-    path: "{{ ext_disk_mountpoint }}" 
-    src: "{{ ext_disk_device }}"
-    fstype: ext4
-    state: mounted
+    #- name: Read device information (always use unit when probing)
+    #  community.general.parted: "device={{ ext_disk_device }} unit=MiB"
+    #  register: dev_info
+    #
+    #- name: Remove all partitions from disk
+    #  community.general.parted:
+    #    device: "{{ ext_disk_device }}"
+    #    number: '{{ item.num }}'
+    #    state: absent
+    #  loop: '{{ dev_info.partitions }}'
+    #  register: partitions
+    #  when: dev_info.partitions[0].fstype != "ext4" or ext_disk_force_whipe
+    #
+    #- name: Create a new ext4 primary partition)
+    #  community.general.parted:
+    #    device: "{{ ext_disk_device }}"
+    #    number: 1
+    #    part_start: 0%
+    #    part_end: 100%
+    #    label: gpt
+    #    name: docker
+    #    fs_type: "ext4"
+    #    state: present
+    #  when: not partitions.skipped
+    #
+    #- name: Create a ext4 filesystem on
+    #  community.general.filesystem:
+    #    fstype: ext4
+    #    force: true
+    #    dev: "{{ ext_disk_device }}"
+    #  when: not partitions.skipped
+    #
+    #- name: "create mountpoint"
+    #  ansible.builtin.file:
+    #    path: "{{ ext_disk_mountpoint }}"
+    #    state: directory
+    #
+    #- name: Mount partition
+    #  ansible.posix.mount:
+    #    path: "{{ ext_disk_mountpoint }}" 
+    #    src: "{{ ext_disk_device }}"
+    #    fstype: ext4
+    #    state: mounted
