@@ -7,9 +7,9 @@
   tasks:
 
   - name: reset machine to plain os by restoring image from a recovery partition
-    ansible.builtin.command: /boot/boot_to_recovery restore
-    async: 1000
-    poll: 0
+    ansible.builtin.command: /boot/firmware/boot_to_recovery restore
+    async: 10
+    poll: 1
     notify:
       - remove hostname from known_hosts
       - set new ansible_hostname
