@@ -40,4 +40,4 @@ issues: https://github.com/einfachIT/ansible-collection-epic/issues
 # and '.git' are always filtered
 build_ignore:
 - '*.tar.gz'
-- venv
+- .venv
