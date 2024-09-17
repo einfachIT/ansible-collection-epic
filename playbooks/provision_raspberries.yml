@@ -6,11 +6,17 @@
 
   pre_tasks:
 
-    - set_fact: ansible_host="{{ raw_hostname }}.{{ epic_domain }}"
+    - name: Set ansible host to raw_hostname
+      ansible.builtin.set_fact:
+        ansible_host: "{{ raw_hostname }}.{{ epic_domain }}"
 
     - name: update apt cache with sudo apt-get --allow-releaseinfo-change update
       command: sudo apt-get --allow-releaseinfo-change update
       changed_when: false
+      retries: 3 # maybe ntp time not yet synced
+      delay: 3
+      register: result
+      until: result.rc == 0
 
     - name: Gather the package facts
       ansible.builtin.package_facts:
@@ -46,7 +52,9 @@
     become: false
     changed_when: false
 
-  - set_fact: ansible_host="{{ ansible_default_ipv4.address }}"
+  - name: Set ansible hostname to ip address
+    ansible.builtin.set_fact:
+      ansible_host: "{{ ansible_default_ipv4.address }}"
 
   - name: Set a hostname
     ansible.builtin.hostname:
@@ -61,6 +69,13 @@
       owner: root
       group: root
       mode: '0644'
+
+  - name: Disalbe mdsn for ipv6 which may lead to issues (hostname already in use)
+    ansible.builtin.lineinfile:
+      path: "/etc/avahi/avahi-daemon.conf"
+      regexp: '^use-ipv6=' 
+      line: "use-ipv6=no"
+      state: present
 
   - name: reboot server
     ansible.builtin.command: reboot
@@ -78,7 +93,9 @@
     become: false
     changed_when: false
 
-  - set_fact: ansible_host="{{ hostname }}.{{ epic_domain }}"
+  - name: set ansible host to new hostname
+    ansible.builtin.set_fact:
+      ansible_host: "{{ hostname }}.{{ epic_domain }}"
 
   - name: Wait 600 seconds, but only start checking after 60 seconds
     wait_for_connection:

@@ -3,9 +3,6 @@
   hosts: epicraspberries
   become: true
   gather_facts: true
-  vars:
-    installation_os_user: pi
-    installation_os_group: pi
 
   roles:
 #    - { role: bassinator.mosquitto }
@@ -15,17 +12,10 @@
     - { role: einfachit.epic.ssh_tor }
     - role: einfachit.epic.net_sync
       tags: net_sync
-    - { role: einfachit.epic.tigerjython }
-  
+#    - { role: einfachit.epic.tigerjython }
+    - role: einfachit.epic.pi_aseba
+
   tasks:
     - name: Install scratch3 OS package
       apt:
         name: 'scratch3'
-      when: ansible_architecture == "aarch64"
-
-    - name: Include asebe role only for bullseye release
-      include_role:
-        name: einfachit.epic.pi_aseba
-      when: ansible_distribution_release == 'bullseye'
-
-
