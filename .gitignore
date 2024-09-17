@@ -1,4 +1,4 @@
-venv
+.venv
 *.bak
 *.swp
 *.tar.gz
