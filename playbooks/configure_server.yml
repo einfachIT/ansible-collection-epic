@@ -8,10 +8,6 @@
   - name: "configure external drive"
     include_role:
       name: "einfachit.epic.ext_disk"
-    vars:
-      ext_disk_device: /dev/sda
-      ext_disk_mountpoint: /var/lib/docker
-
 
 - name: setup epic docker container host
   hosts: docker_host
