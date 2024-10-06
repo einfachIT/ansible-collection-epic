@@ -22,11 +22,17 @@
       ansible.builtin.package_facts:
         manager: apt
     
-    - name: Hold raspberrypi-kernel
+    - name: Hold raspberrypi-kernel for bullseye
       dpkg_selections:
         name: raspberrypi-kernel
         selection: hold
       when: "'raspberrypi-kernel' in ansible_facts.packages"
+
+    - name: Hold raspberrypi-kernel for bookworm
+      dpkg_selections:
+        name: "{{ item }}"
+        selection: hold
+      loop: "{{ ansible_facts.packages | select('match', 'linux-image-rpi*' ) }}"
 
     - name: Upgrade the OS (apt-get upgrade)
       apt:
