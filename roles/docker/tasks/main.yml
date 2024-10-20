@@ -16,14 +16,20 @@
     - python3-docker
     - lvm2
 
-- name: Add docker repo GPG key
-  ansible.builtin.apt_key:
+      #- name: Add docker repo GPG key
+      #  ansible.builtin.apt_key:
+      #    url: https://download.docker.com/linux/debian/gpg
+      #    state: present
+
+- name: Add docker GPG key
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/debian/gpg
-    state: present
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
 
 - name: Install docker repository
   ansible.builtin.apt_repository:
-    repo: "deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    repo: "deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
     state: present
 
 - name: Install docker

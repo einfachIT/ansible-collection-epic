@@ -8,7 +8,7 @@
 
     - name: Set ansible host to raw_hostname
       ansible.builtin.set_fact:
-        ansible_host: "{{ raw_hostname }}.{{ epic_domain }}"
+        ansible_host: "{{ raw_hostname }}"
 
     - name: update apt cache with sudo apt-get --allow-releaseinfo-change update
       command: sudo apt-get --allow-releaseinfo-change update
@@ -22,17 +22,17 @@
       ansible.builtin.package_facts:
         manager: apt
     
-    - name: Hold raspberrypi-kernel for bullseye
-      dpkg_selections:
-        name: raspberrypi-kernel
-        selection: hold
-      when: "'raspberrypi-kernel' in ansible_facts.packages"
+          #- name: Hold raspberrypi-kernel for bullseye
+          #  dpkg_selections:
+          #    name: raspberrypi-kernel
+          #    selection: hold
+          #  when: "'raspberrypi-kernel' in ansible_facts.packages"
 
-    - name: Hold raspberrypi-kernel for bookworm
-      dpkg_selections:
-        name: "{{ item }}"
-        selection: hold
-      loop: "{{ ansible_facts.packages | select('match', 'linux-image-rpi*' ) }}"
+          #- name: Hold raspberrypi-kernel for bookworm
+          #  dpkg_selections:
+          #    name: "{{ item }}"
+          #    selection: hold
+          #  loop: "{{ ansible_facts.packages | select('match', 'linux-image-rpi*' ) }}"
 
     - name: Upgrade the OS (apt-get upgrade)
       apt:
@@ -101,7 +101,7 @@
 
   - name: set ansible host to new hostname
     ansible.builtin.set_fact:
-      ansible_host: "{{ hostname }}.{{ epic_domain }}"
+      ansible_host: "{{ hostname }}"
 
   - name: Wait 600 seconds, but only start checking after 60 seconds
     wait_for_connection:

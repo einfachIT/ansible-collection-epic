@@ -12,7 +12,7 @@
     vars:
       ansible_connection: local
     delegate_to: localhost
-    when: docker_host != 'localhost'
+    when: docker_api is defined
 
   - name: create backup volume
     docker_volume:

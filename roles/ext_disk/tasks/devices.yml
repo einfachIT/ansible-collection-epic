@@ -6,16 +6,13 @@
 - debug:
     var: dev_info.partitions
 
-- debug:
-    var: device.ext_disk_force_whipe
-
-- name: Remove all partitions from disk
+- name: Wipe all partitions
   community.general.parted:
     device: "{{ device.ext_disk_device }}"
     number: '{{ item.num }}'
     state: absent
+  register: partitions 
   loop: '{{ dev_info.partitions }}'
-  register: partitions
   when: dev_info.partitions[0].fstype != "ext4" or device.ext_disk_force_whipe
 
     #- name: Create a new ext4 primary partition)
